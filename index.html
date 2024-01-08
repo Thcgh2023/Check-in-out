@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check in - out</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://static.line-scdn.net/liff/edge/2.1/sdk.js"></script>
+    <style>
+        body{
+            font-family: 'Noto Sans Thai', sans-serif;        }
+        .input-group{
+            justify-content: center;
+        }
+        #time{
+            font-size: 2rem;
+        }
+        #date{
+            font-size: 1rem;
+        }
+        .banner{
+            text-align: right;
+            color: #1F3D77;
+            padding: 20px;
+            background: #ffffff;
+            font-weight: bold;
+            margin-top: 10px;
+            border: 1px solid #1F3D77;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .btn-blue{
+            background-color: #1F3D77;
+            color: white;
+            border: none;
+            padding: 15px;
+            width: 120px;
+        }
+        .btn-green{
+            background-color: #179824;
+            color: white;
+            padding: 10px;
+            width: 140px;
+            border-radius: 50px;
+        }
+        .btn-yellow{
+            background-color: #ffc107;
+            color: rgb(0, 0, 0);
+            padding: 10px;
+            width: 140px;
+            border-radius: 50px;
+        }
+        .btn-red{
+            background-color: #C70B0B;
+            color: white;
+            padding: 15px;
+            width: 120px;
+        }
+        .btn-gray{
+            background-color: #b3b3b3;
+            color: white;
+            padding: 15px;
+            width: 120px;
+        }
+        .btn-map{
+            background-color: #1F3D77;
+            color: white;
+            padding: 15px;
+        }
+
+        .switch-field {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .switch-field input {
+            position: absolute !important;
+            clip: rect(0, 0, 0, 0);
+            height: 1px;
+            width: 1px;
+            border: 0;
+            overflow: hidden;
+        }
+
+        .switch-field label {
+            background-color: #EAF0FE;
+            color: #000;
+            line-height: 2;
+            text-align: center;
+            padding: 5px 15px;
+            font-weight: bold;
+            transition: all 0.1s ease-in-out;
+            border: 1px solid #EAF0FE;
+            border-radius:5px;
+
+        }
+        .switch-field label:hover {
+            cursor: pointer;
+        }
+
+        .switch-field input:checked+label {
+            background-color: #1F3D77;
+            color: rgb(255, 255, 255);
+            box-shadow: none;
+            font-weight: bold;
+            border: 1px solid #EAF0FE;
+        }
+        .switch-field label:first-of-type {
+            border-radius:5px;}
+
+        .switch-field label:last-of-type {
+            border-radius:5px;
+        }
+
+        .form-control {
+            padding: 0.5rem 0.75rem !important;
+            border: 1px solid #1F3D77;
+        }
+        
+        .input-group{
+            display: flex;
+            justify-content: space-between;
+        }
+      
+        .input-icons span {
+            position: absolute;
+            padding: 10px 15px;
+            color: #1F3D77;
+        }
+        .input-icons {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        .input-field {
+            width: 100%;
+            text-align: left;
+            border: 1px solid #EAF0FE;
+            border-radius: 5px;
+            padding:10px 50px ;
+            
+        }
+        .card{
+            border: 1px solid #EAF0FE;
+        }
+        #locationInfo{
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+        }
+        .img-time{
+            width: 100%;
+        }
+		 td {
+            width: 100%;
+            max-width: 100px;
+            color:white;
+    }
+</style>
+<script>
+    window.onload = function () {
+        initializeLiff(),getUserProfile();
+    };
+
+    async function initializeLiff() {
+        await liff.init({ liffId: '2002290922-O7vx3Jj7' }); // Replace with your LIFF ID
+
+        if (liff.isLoggedIn()) {
+            getUserProfile();
+        } else {
+            liff.login();
+        }
+    }
+
+    async function getUserProfile() {
+        try {
+            const profile = await liff.getProfile();
+            document.getElementById('userId').value = profile.userId;
+            document.getElementById('displayName').value = profile.displayName;
+            // Trigger search when user ID is retrieved
+            searchData();
+        } catch (error) {
+            console.error('Error getting profile data:', error);
+        }
+    }
+</script>
+</head>
+<body>
+    <div class="container p-4">
+        <div class="p-2"><span><b>สวัสดี</b></span>
+            <input type="text" id="displayName" name="displayName" style="color:#1F3D77;border: none; width:65%; background-color: rgba(255, 255, 255, 0);">
+        </div>
+        <div class="banner mb-3">
+            <div class="imgband" style="max-width:35%;"> <img class="img-time" src="https://img.freepik.com/free-vector/time-management-concept-illustration_114360-1013.jpg?w=1380&t=st=1704593029~exp=1704593629~hmac=79f370776b7eaced7dff7753cd7125787425973b24a87f90f98f25bf767b62c2" alt=""> </div>
+            <div class="daytime">
+            <div id="date"></div>
+            <div id="time"></div>
+            <input type="date" id="todayInput" name="todayInput" readonly style="position: absolute; left: -9999px;">
+            <input type="time" id="currentTime" name="currentTime"  style="display: none;" >
+            </div>
+        </div>
+        
+        <div id="step1">
+            <div class="state p-2">
+                <div class="input-icons ">
+                    <span class="material-symbols-outlined"> co_present </span>
+                    <input type="text" class="input-field" id="columnBData" placeholder="ชื่อ - สกุล"  name="columnBData" required>
+                </div>
+                <div class="input-icons ">
+                    <span class="material-symbols-outlined">pin</span>
+                    <input type="text" class="input-field" id="roleInput" placeholder="รหัส พนักงาน"  name="roleInput"  required>               
+                 </div>
+                 <div class="input-icons ">
+                    <span class="material-symbols-outlined"> editor_choice </span>
+                    <input type="text" class="input-field" id="columnDData" placeholder="ตำแหน่ง"  name="columnDData" required>
+                </div>
+				
+                   <div class="switch-field mt-4 mb-4">
+                    <input type="radio" id="radio-three" name="switch-jop" value="เข้างาน" />
+                    <label for="radio-three">เข้างาน</label>
+                    <input type="radio" id="radio-four" name="switch-jop" value="ระหว่างวัน" />
+                    <label for="radio-four">ระหว่างวัน</label>
+                    <input type="radio" id="radio-five" name="switch-jop" value="ออกงาน" />
+                    <label for="radio-five">ออกงาน</label>
+                </div>
+                <!-- Add a hidden input field to store the selected value -->
+                <input type="hidden" id="jobInput" name="jobInput" required>
+                <textarea class="form-control" placeholder="Note" id="noteInput"></textarea><br>
+            </div>
+            <button class="btn btn-blue mt-3" onclick="nextStep()">ถัดไป</button>
+            <table id="data-table" style="color: black; position: absolute;z-index: -9999;">
+            <input type="text" id="userId" name="userId" oninput="searchData()" style="color:#fff; border: 1px solid #fff; position: absolute; z-index: -99;"/>
+            <input type="text" id="columnAData" name="columnAData" style="display: none;"/>    
+            </table> 
+        </div>
+
+        <div id="step2" class="card p-4" style="display: none;text-align: center;">
+            <div class="photo" style="max-width:100%; width:640;height:420;">
+                <center><video id="camera-preview" width="70%" height="auto" autoplay playsinline poster="https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/330px-No-Image-Placeholder.svg.png?20200912122019"></video></center>
+                <br>
+                <img id="preview" width="70%" height="auto"  alt="" required>
+                <div class="mb-4">
+                <button class="btn btn-yellow m-2" id="start-camera-btn">เริ่มเปิดกล้อง</button>
+                <button class="btn btn-green m-2"  id="capture-btn" disabled>ถ่ายรูป</button>
+               </div>
+            </div>
+        
+        <div class="input-group mb-4">
+            <button class="btn btn-gray m-2" onclick="prevStep()">กลับ</button>
+            <button class="btn btn-blue m-2" onclick="nextStep()">ถัดไป</button>
+        </div>
+    </div>
+        <div id="step3" class="card p-4" style="display: none;text-align: center;">
+            <div class="submit">
+                <div class="p-2 mb-2">
+                <button type="button" onclick="getLocation()" class="btn btn-map">กดเพื่อยืนยันที่อยู่ของคุณ</button></div>
+                <div id="locationInfo" name="locationInfo">
+                    <p id="latitude">Latitude: </p>
+                    <p id="longitude">Longitude: </p></div>
+                    <p id="fullAddress">สถานที่</p>
+
+                    <input type="hidden" id="latitudeInput" name="latitudeInput">
+                    <input type="hidden" id="longitudeInput" name="longitudeInput">
+                    <input type="hidden" id="fullAddressInput" name="fullAddressInput" required>
+
+                </div>
+                <br>
+                <!-- Add iframe for displaying Google Maps -->
+                <iframe id="mapIframe"class="p-2" width="100%" height="240" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+                <div class="input-group mt-4">
+                <button class="btn btn-gray " onclick="prevStep()">กลับ</button>
+                <button id="submitButton" class="btn btn-red" onclick="submitForm()">บันทึกข้อมูล</button>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Bootstrap JS and Popper.js (required for some Bootstrap components) -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+    <script>
+        let url = "https://script.google.com/macros/s/AKfycbwx800A7PRbBiEEM3m1tMkAj9RLi2_XnvepBgH9ztcFwN68HfMvXtmEElF2CsN4XiJz/exec";
+        let video = document.getElementById('video');
+        let canvas = document.getElementById('canvas');
+        let columnBData = document.querySelector("#columnBData");
+        let roleInput = document.querySelector("#roleInput");
+        let jobInput = document.querySelector("#jobInput");
+        let noteInput = document.querySelector("#noteInput");
+        let todayInput = document.querySelector("#todayInput");
+        let currentTime = document.querySelector("#currentTime");
+        let latitudeInput = document.querySelector("#latitudeInput");
+        let longitudeInput = document.querySelector("#longitudeInput");
+        let fullAddressInput = document.querySelector("#fullAddressInput");
+        let userId = document.querySelector("#userId");
+        let preview = document.getElementById('preview');
+
+        document.addEventListener("DOMContentLoaded", function () {
+        const video = document.getElementById("camera-preview");
+        const startCameraBtn = document.getElementById("start-camera-btn");
+        const captureBtn = document.getElementById("capture-btn");
+        const previewImage = document.getElementById("preview");
+        const dataForm = document.getElementById("data-form");
+
+        let stream;
+
+        // เริ่มเปิดกล้องเมื่อคลิกปุ่ม
+        startCameraBtn.addEventListener("click", function () {
+            startCamera();
+        });
+
+        // ถ่ายรูปเมื่อคลิกปุ่ม
+        captureBtn.addEventListener("click", function () {
+        const canvas = document.createElement("canvas");
+        const context = canvas.getContext("2d");
+
+        // กำหนดขนาดของ canvas เท่ากับ video
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+
+        // ถ่ายภาพจาก video และนำมาแสดงใน preview
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+        previewImage.src = canvas.toDataURL("image/png");
+
+        // ซ่อนกล้อง
+        video.style.display = "none";
+        });
+
+        // บันทึกข้อมูลเมื่อ submit form
+        dataForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        const formData = new FormData(dataForm);
+        const capturedImage = previewImage.src;
+
+        // เพิ่มข้อมูลรูปถ่ายลงใน FormData
+        formData.append("capturedImage", capturedImage);
+
+        // สามารถทำการส่งข้อมูลไปที่เซิร์ฟเวอร์หรือประมวลผลต่อไปได้ที่นี่
+
+        // ตัวอย่างการแสดงข้อมูลที่ console
+        for (let [key, value] of formData.entries()) {
+            console.log(key, value);
+        }
+
+        // ซ่อนกล้องหลังจากที่ถ่ายรูป
+        video.style.display = "none";
+        });
+
+        function startCamera() {
+        // เรียกใช้กล้องถ่ายภาพ
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(function (videoStream) {
+                stream = videoStream;
+                video.srcObject = videoStream;
+                captureBtn.disabled = false; // ปลดล็อกปุ่มถ่ายรูป
+                video.style.display = "block"; // แสดงกล้อง
+            })
+            .catch(function (error) {
+                console.error("Error accessing the camera: ", error);
+            });
+            }
+        });
+
+        function submitForm() {
+    // Check if required fields are filled
+    if (!columnBData.value || !roleInput.value || !jobInput.value || !latitudeInput.value || !longitudeInput.value) {
+        Swal.fire({
+            title: 'แจ้งเตือน!',
+            text: 'กรุณากรอกข้อมูลที่จำเป็น (*) ให้ครบถ้วน',
+            icon: 'warning',
+            confirmButtonText: 'OK',
+        });
+        return; // Stop the submission if required fields are not filled
+    }
+
+    // Ask for confirmation before submission
+    Swal.fire({
+        title: 'ยืนยันการส่งข้อมูล',
+        text: 'คุณแน่ใจหรือไม่ที่ต้องการส่งข้อมูล?',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'ยืนยัน',
+        cancelButtonText: 'ยกเลิก',
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Disable the submit button to prevent multiple submissions
+            document.getElementById('submitButton').disabled = true;
+
+            let spt = preview.src.split("base64,")[1];
+            let obj = {
+                base64: spt,
+                name: columnBData.value,
+                role: roleInput.value,
+                job: jobInput.value,
+                note: noteInput.value,
+                today: todayInput.value,
+                time: currentTime.value,
+                lat: latitudeInput.value,
+                long: longitudeInput.value,
+                address: fullAddressInput.value,
+                user: userId.value
+            };
+
+            fetch(url, {
+                method: "POST",
+                body: JSON.stringify(obj),
+            })
+            .then(response => response.text())
+            .then(data => {
+                Swal.fire({
+                    title: 'สำเร็จ!',
+                    text: 'บันทึกข้อมูลของคุณเรียบร้อย!',
+                    icon: 'success',
+                    confirmButtonText: 'ปิด',
+                }).then(() => {
+                    // Close LIFF (Line Front-end Framework)
+                    liff.closeWindow();
+                    console.log(data);
+                });
+            })
+            .catch(error => {
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'Form submission failed. Please try again.',
+                    icon: 'error',
+                    confirmButtonText: 'OK',
+                }).then(() => {
+                    // Re-enable the submit button in case of an error
+                    document.getElementById('submitButton').disabled = false;
+                });
+
+                console.error(error);
+            });
+        }
+    });
+}
+
+        </script>
+        <script src="https://static.line-scdn.net/liff/edge/2.1/sdk.js"></script>
+
+<script>
+       
+            function updateDateTime() {
+                const dateElement = document.getElementById('date');
+                const timeElement = document.getElementById('time');
+                const now = new Date();
+    
+                const dateOptions = {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                };
+    
+                const timeOptions = {
+                    hour: 'numeric',
+                    minute: 'numeric',
+                    second: 'numeric',
+                    hour12: false, // ให้แสดงในรูปแบบ 24 ชั่วโมง
+                    timeZone: 'Asia/Bangkok'
+                };
+    
+                const formattedDate = now.toLocaleDateString('th-TH', dateOptions);
+                const formattedTime = now.toLocaleTimeString('en-US', timeOptions);
+    
+                dateElement.textContent = formattedDate;
+                timeElement.textContent = formattedTime;
+            }
+    
+            // อัพเดทวันเวลาทุก 1 วินาที
+            setInterval(updateDateTime, 1000);
+    
+            // แรกเริ่มเวลาเมื่อโหลดหน้าเว็บ
+            updateDateTime();
+                        // Add an event listener to the radio buttons
+            document.querySelectorAll('input[name="switch-jop"]').forEach(function(radio) {
+                radio.addEventListener('change', function() {
+                    // Update the hidden input field with the selected value
+                    document.getElementById('jobInput').value = this.value;
+                });
+            });
+            function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(displayLocation);
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        }
+
+        function displayLocation(position) {
+            const latitudeElement = document.getElementById("latitude");
+            const longitudeElement = document.getElementById("longitude");
+            const fullAddressElement = document.getElementById("fullAddress");
+            const latitudeInput = document.getElementById("latitudeInput");
+            const longitudeInput = document.getElementById("longitudeInput");
+            const fullAddressInput = document.getElementById("fullAddressInput");
+            const mapIframe = document.getElementById("mapIframe");
+
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+            const fullAddress = position.coords.fullAddress;
+
+            latitudeElement.innerText = `Latitude: ${latitude}`;
+            longitudeElement.innerText = `Longitude: ${longitude}`;
+            longitudeElement.innerText = `Longitude: ${longitude}`;
+
+            // Update the hidden input fields with the latitude and longitude values
+            latitudeInput.value = latitude;
+            longitudeInput.value = longitude;
+
+            // Use Google Maps Geocoding API to get the full address
+            const geocodingApiUrl = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=AIzaSyAAALd-dexHFg75tN38vlGqj_WDWexPxZc`;
+
+            fetch(geocodingApiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.results && data.results.length > 0) {
+                        const fullAddress = data.results[0].formatted_address;
+                        fullAddressElement.innerText = `ที่อยู่ของคุณ: ${fullAddress}`;
+                        // Set the value of the full address input
+                        fullAddressInput.value = fullAddress;
+                    } else {
+                        fullAddressElement.innerText = "Unable to retrieve full address.";
+                    }
+                })
+                .catch(error => {
+                    console.error("Error fetching geocoding data:", error);
+                    fullAddressElement.innerText = "Error fetching geocoding data.";
+                });
+
+            // Create URL for Google Maps using the obtained location
+            const mapsUrl = `https://www.google.com/maps/embed/v1/place?key=AIzaSyAAALd-dexHFg75tN38vlGqj_WDWexPxZc&q=${latitude},${longitude}`;
+            mapIframe.src = mapsUrl;
+        }
+
+        </script>
+        <script>
+            function getCurrentTimeInBangkok() {
+            const now = new Date();
+            const bangkokTime = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Bangkok' }));
+            const hours = String(bangkokTime.getHours()).padStart(2, '0');
+            const minutes = String(bangkokTime.getMinutes()).padStart(2, '0');
+            return `${hours}:${minutes}`;
+        }
+
+            // Set the value of the input to the current time in Bangkok
+            document.getElementById('currentTime').value = getCurrentTimeInBangkok();
+            // Get today's date in the format "YYYY-MM-DD"
+            function getFormattedDate() {
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const day = String(today.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+            }
+    
+            // Set the value of the input to today's date
+            document.getElementById('todayInput').value = getFormattedDate();
+        </script>
+        <script>
+                 // startCamera(); // Remove this line to start the camera when the page loads
+        let currentStep = 1;
+
+        function nextStep() {
+            if (currentStep < 3) {
+                document.getElementById(`step${currentStep}`).style.display = 'none';
+                currentStep++;
+                document.getElementById(`step${currentStep}`).style.display = 'block';
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 1) {
+                document.getElementById(`step${currentStep}`).style.display = 'none';
+                currentStep--;
+                document.getElementById(`step${currentStep}`).style.display = 'block';
+            }
+        }
+
+        </script>
+    <script>
+    // Replace YOUR_API_KEY with your actual API key
+    const apimapKey = 'AIzaSyB89WSrfZKA_uP9UslXs8Bo7y90PYzbpD4';
+
+    // Replace YOUR_SPREADSHEET_ID with your actual Google Sheets ID
+    const spreadsheet2Id = '1DkCnmGVYMjf66tarSX1EA5zm1mDL_0ACYNx2AAa5J6g';
+
+    // Google Sheets API endpoint
+    const apiUrl = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheet2Id}/values/MEMBER?key=${apimapKey}`;
+
+    // Function to fetch data from Google Sheets API
+    async function fetchData() {
+        try {
+            const response = await fetch(apiUrl);
+            const data = await response.json();
+
+            // Extract values from the response
+            const values = data.values;
+
+            // Build the table HTML
+            const table = document.getElementById('data-table');
+            table.innerHTML = ''; // Clear previous data
+
+            values.forEach(row => {
+                const tr = document.createElement('tr');
+                row.forEach(cell => {
+                    const td = document.createElement('td');
+                    td.textContent = cell;
+                    tr.appendChild(td);
+                });
+                table.appendChild(tr);
+            });
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    }
+
+    // Call the fetchData function when the page loads
+    fetchData();
+
+    function searchData() {
+    const searchInput = document.getElementById('userId');
+    const filter = searchInput.value.toUpperCase();
+    const table = document.getElementById('data-table');
+    const rows = table.getElementsByTagName('tr');
+
+    for (let i = 0; i < rows.length; i++) {
+    const cells = rows[i].getElementsByTagName('td');
+    let shouldDisplay = false;
+
+    for (let j = 0; j < cells.length; j++) {
+        const cellText = cells[j].textContent || cells[j].innerText;
+
+    if (cellText.toUpperCase().indexOf(filter) > -1) {
+        shouldDisplay = true;
+
+        // Display data related to column A in the corresponding input field
+        const columnADataInput = document.getElementById('columnAData');
+        const columnAData = rows[i].getElementsByTagName('td')[0].textContent || rows[i].getElementsByTagName('td')[0].innerText;
+        columnADataInput.value = columnAData;
+
+        // Display data related to column B in the corresponding input field
+        const columnBDataInput = document.getElementById('columnBData');
+        const columnBData = rows[i].getElementsByTagName('td')[1].textContent || rows[i].getElementsByTagName('td')[1].innerText;
+        columnBDataInput.value = columnBData;
+
+        // Display data related to column B in the corresponding input field
+        const roleInputInput = document.getElementById('roleInput');
+        const roleInput = rows[i].getElementsByTagName('td')[2].textContent || rows[i].getElementsByTagName('td')[1].innerText;
+        roleInputInput.value = roleInput;
+
+        // Display data related to column D in the corresponding input field
+        const columnDDataInput = document.getElementById('columnDData');
+        const columnDData = rows[i].getElementsByTagName('td')[3].textContent || rows[i].getElementsByTagName('td')[1].innerText;
+        columnDDataInput.value = columnDData;
+
+        break;
+        }
+    }
+
+        rows[i].style.display = shouldDisplay ? '' : 'none';
+        }
+    }
+
+</script>
+</body>
+</html>
