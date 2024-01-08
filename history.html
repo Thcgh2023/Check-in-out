@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ประวัติการบันทึก</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai&display=swap" rel="stylesheet">
+    <script src="https://static.line-scdn.net/liff/edge/2.1/sdk.js"></script>
+</head>
+
+<style>
+    body {
+        font-family: 'Noto Sans Thai', sans-serif;
+    }
+
+    input {
+        border: 1px solid white;
+    }
+
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        font-size: 0.8rem;
+    }
+
+    th,
+    td {
+        border: 1px solid #EAF0FE;
+        text-align: left;
+        padding: 8px;
+        width: 25%;
+    }
+
+    tr:nth-child(even) {
+        background-color: #ffffff;
+        font-size: 0.8rem;
+    }
+
+    label {
+        font-size: 0.8rem;
+        font-weight: bold;
+    }
+
+    .headertable {
+        background-color: #1F3D77;
+        color: white;
+    }
+
+    .card {
+        padding: 20px;
+        border-radius: 5px;
+    }
+    .title {
+    padding:10px 20px;
+    background: #ffffff;
+    color: #1f3d77;
+    border-radius: 5px;
+    border: 1px solid;
+	font-weight: bold;
+}
+</style>
+
+<body>
+    <div style="padding:0 20px;">
+		 <input type="text" id="userId" name="userId" style="color: white;" />
+        <div class="title">บันทึกเวลางาน ย้อนหลัง</div>
+		<div class="card">
+       <label for="columnAData">ชื่อพนักงาน </label>
+            <input type="text" id="columnAData" name="columnAData" />
+            <br>
+            <label for="columnBData">รหัสพนักงาน </label>
+            <input type="text" class="form-control" id="columnBData" name="columnBData" />
+        </div>
+        <table class="card headertable">
+            <tr>
+                <th>สถานะ</th>
+                <th>หมายเหตุ</th>
+                <th>วันที่</th>
+                <th>เวลา</th>
+            </tr>
+        </table>
+        <table id="data-table"></table>
+    </div>
+
+    <script>
+        let inputEventCounter = 0;
+    
+        window.onload = function () {
+            initializeLiff();
+        };
+    
+        async function initializeLiff() {
+            await liff.init({ liffId: '2002290922-yOznjZkQ' }); // Replace with your LIFF ID
+    
+            if (liff.isLoggedIn()) {
+                getUserProfile();
+            } else {
+                liff.login();
+            }
+        }
+    
+        async function getUserProfile() {
+            try {
+                const profile = await liff.getProfile();
+                document.getElementById('userId').value = profile.userId;
+    
+                // Trigger search when user ID is retrieved
+                fetchData();
+            } catch (error) {
+                console.error('Error getting profile data:', error);
+            }
+        }
+    
+   async function fetchData() {
+            try {
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+                const values = data.values;
+
+                // Sort values array based on the first column (index 0) in descending order
+                values.sort((a, b) => b[0].localeCompare(a[0]));
+
+                // Build the table HTML
+                const table = document.getElementById('data-table');
+                table.innerHTML = ''; // Clear previous data
+
+                // Limit the iteration to 5 rows
+                for (let rowIndex = 0; rowIndex < Math.min(values.length, 30); rowIndex++) {
+                    const row = values[rowIndex];
+                    const tr = document.createElement('tr');
+
+                    row.forEach((cell, cellIndex) => {
+                        const td = document.createElement('td');
+
+                        // Format date for column 7 (index 6)
+                        if (cellIndex === 6) {
+                            const date = new Date(cell);
+                            td.textContent = date.toLocaleDateString('en-GB'); // Change 'en-GB' to your preferred locale
+                        } else {
+                            td.textContent = cell;
+                        }
+
+                        // Hide the first column (index 0)
+                        if ([0, 1, 2, 3, 8, 9, 10, 11].includes(cellIndex)) {
+                            td.style.display = 'none';
+                        }
+
+                        tr.appendChild(td);
+                    });
+
+                    table.appendChild(tr);
+
+                    // Hide the seventh row (index 6)
+                    if (rowIndex === 31) {
+                        tr.style.display = 'none';
+                    }
+                }
+
+                // Trigger search when new data is fetched
+                searchData();
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        }
+    
+        // Reset the counter after every third input event
+        document.getElementById('userId').addEventListener('input', () => {
+            inputEventCounter++;
+            if (inputEventCounter === 3) {
+                inputEventCounter = 0;
+            }
+    
+            // Run the search logic every third input event
+            if (inputEventCounter === 0) {
+                searchData();
+            }
+        });
+    
+        function searchData() {
+            const searchInput = document.getElementById('userId');
+            const filter = searchInput.value.toUpperCase();
+            const table = document.getElementById('data-table');
+            const rows = table.getElementsByTagName('tr');
+    
+            for (let i = 0; i < rows.length; i++) {
+                const cells = rows[i].getElementsByTagName('td');
+                let shouldDisplay = false;
+    
+                for (let j = 0; j < cells.length; j++) {
+                    const cellText = cells[j].textContent || cells[j].innerText;
+    
+                    if (cellText.toUpperCase().indexOf(filter) > -1) {
+                        shouldDisplay = true;
+    
+                        // Display data related to column A in the corresponding input field
+                        const columnADataInput = document.getElementById('columnAData');
+                        const columnAData = rows[i].getElementsByTagName('td')[2].textContent || rows[i].getElementsByTagName('td')[2].innerText;
+                        columnADataInput.value = columnAData;
+    
+                        // Display data related to column B in the corresponding input field
+                        const columnBDataInput = document.getElementById('columnBData');
+                        const columnBData = rows[i].getElementsByTagName('td')[3].textContent || rows[i].getElementsByTagName('td')[3].innerText;
+                        columnBDataInput.value = columnBData;
+    
+                        break;
+                    }
+                }
+    
+                rows[i].style.display = shouldDisplay ? '' : 'none';
+            }
+        }
+
+    </script>
+       <script>
+        // Replace YOUR_API_KEY with your actual API key
+        const apiKey = 'AIzaSyB89WSrfZKA_uP9UslXs8Bo7y90PYzbpD4';
+
+        // Replace YOUR_SPREADSHEET_ID with your actual Google Sheets ID
+        const spreadsheetId = '1DkCnmGVYMjf66tarSX1EA5zm1mDL_0ACYNx2AAa5J6g';
+
+        // Google Sheets API endpoint
+        const apiUrl = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/DATA?key=${apiKey}`;
+
+        // Call the fetchData function when the page loads
+        fetchData();
+    </script>
+</body>
+
+</html>
