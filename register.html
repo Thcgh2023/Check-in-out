@@ -87,10 +87,14 @@
                 <input type="text" class="input-field" id="roleId" placeholder="ตำแหน่ง"   name="roleId" >
             </div>
             <br>
-            <div class="input-icons pb-2">
-                <span class="material-symbols-outlined"> photo_camera </span>
-                <input type="text" class="input-field" placeholder="รูปถ่าย" id="imageInput" name="imageInput" ><br>
-            </div>
+            <!-- Add this input field to your form -->
+		<div class="input-icons pb-2">
+		    <span class="material-symbols-outlined"> photo_camera </span>
+		    <input type="file" class="input-field" id="imageInput" name="imageInput" accept="image/*" onchange="previewImage(this)">
+		</div>
+		
+		<!-- Add an image preview container if needed -->
+		<div id="imagePreviewContainer"></div>
             <br>
             <button id="submitButton" class="btn input-field" onclick="submitForm()">บันทึกข้อมูล</button>
         </div>
