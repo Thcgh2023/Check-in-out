@@ -87,14 +87,10 @@
                 <input type="text" class="input-field" id="roleId" placeholder="ตำแหน่ง"   name="roleId" >
             </div>
             <br>
-            <!-- Add this input field to your form -->
-		<div class="input-icons pb-2">
-		    <span class="material-symbols-outlined"> photo_camera </span>
-		    <input type="file" class="input-field" id="imageInput" name="imageInput" accept="image/*" onchange="previewImage(this)">
-		</div>
-		
-		<!-- Add an image preview container if needed -->
-		<div id="imagePreviewContainer"></div>
+            <div class="input-icons pb-2">
+                <span class="material-symbols-outlined"> photo_camera </span>
+                <input type="text" class="input-field" placeholder="รูปถ่าย" id="imageInput" name="imageInput" ><br>
+            </div>
             <br>
             <button id="submitButton" class="btn input-field" onclick="submitForm()">บันทึกข้อมูล</button>
         </div>
@@ -105,7 +101,6 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
     <script>
-	
         window.onload = function () {
             initializeLiff(), getUserProfile();
         };
@@ -129,28 +124,10 @@
                 console.error('Error getting profile data:', error);
             }
         }
-	 function previewImage(input) {
-            var previewContainer = document.getElementById('imagePreviewContainer');
-            previewContainer.innerHTML = '';
-
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
-
-                reader.onload = function (e) {
-                    var previewImage = document.createElement('img');
-                    previewImage.setAttribute('src', e.target.result);
-                    previewImage.setAttribute('alt', 'Image Preview');
-                    previewImage.setAttribute('style', 'max-width: 100%; max-height: 200px;');
-                    previewContainer.appendChild(previewImage);
-                };
-
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
 
         function submitForm() {
             document.getElementById('submitButton').disabled = true;
-		
+
             let obj = {
                 userID: userId.value,
                 nameID: nameId.value,
@@ -159,7 +136,7 @@
                 imageInput: imageInput.value
             };
 
-            fetch("https://script.google.com/macros/s/AKfycbzQGgr-JPmxC2UpLZXxQnMg2i1moFyOwqQie3PhOsEgXFY6EQ2_PFezF8vhcBGeWLHg/exec", {
+            fetch("https://script.google.com/macros/s/AKfycbxgBN7tvWIK8RYTrKCP_ImdV8QZrLGHk6FbjkghvgSzCty4muhuGVIvzVB8dK7zh75B/exec", {
                 method: "POST",
                 body: JSON.stringify(obj),
             })
