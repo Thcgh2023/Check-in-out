@@ -126,8 +126,21 @@
         }
 
         function submitForm() {
+    // Display a confirmation dialog
+    Swal.fire({
+        title: 'ยืนยันการส่งข้อมูล',
+        text: 'คุณแน่ใจหรือไม่ที่ต้องการส่งข้อมูล?',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'ยืนยัน',
+        cancelButtonText: 'ยกเลิก',
+    }).then((result) => {
+        // Check if the user confirmed the submission
+        if (result.isConfirmed) {
+            // Disable the submit button to prevent multiple submissions
             document.getElementById('submitButton').disabled = true;
 
+            // Construct the data object
             let obj = {
                 userID: userId.value,
                 nameID: nameId.value,
@@ -136,35 +149,59 @@
                 imageInput: imageInput.value
             };
 
+            // Display uploading message
+            Swal.fire({
+                title: 'กำลังบันทึกข้อมูล',
+                text: 'กรุณารอสักครู่...',
+                showConfirmButton: false,
+                allowOutsideClick: false,
+                onBeforeOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
+            // Send data to the server
             fetch("https://script.google.com/macros/s/AKfycbxgBN7tvWIK8RYTrKCP_ImdV8QZrLGHk6FbjkghvgSzCty4muhuGVIvzVB8dK7zh75B/exec", {
                 method: "POST",
                 body: JSON.stringify(obj),
             })
             .then(response => response.text())
             .then(data => {
+                // Close the uploading message
+                Swal.close();
+
+                // Display success message
                 Swal.fire({
                     title: 'สำเร็จ!',
                     text: 'บันทึกข้อมูลของคุณเรียบร้อย!',
                     icon: 'success',
                     confirmButtonText: 'ปิด',
                 }).then(() => {
-                    sendFlexMessage();
+                    sendFlexMessage(); // Assuming this is another function you want to call upon successful submission
                     console.log(data);
                 });
             })
             .catch(error => {
+                // Close the uploading message
+                Swal.close();
+
+                // Display error message
                 Swal.fire({
                     title: 'Error!',
                     text: 'Form submission failed. Please try again.',
                     icon: 'error',
                     confirmButtonText: 'OK',
                 }).then(() => {
+                    // Re-enable the submit button in case of an error
                     document.getElementById('submitButton').disabled = false;
                 });
 
                 console.error(error);
             });
-        }  
+        }
+    });
+}
+
      </script>
 	 <script src="https://static.line-scdn.net/liff/edge/2.1/sdk.js"></script>
      <script>
