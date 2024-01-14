@@ -439,7 +439,6 @@
                     confirmButtonText: 'ปิด',
                 }).then(() => {
                     // Close LIFF (Line Front-end Framework)
-		    sendFlexMessage(); // Add this line to send Flex Message and close LIFF	
                     liff.closeWindow();
                     console.log(data);
                 });
@@ -469,191 +468,6 @@
         </script>
         <script src="https://static.line-scdn.net/liff/edge/2.1/sdk.js"></script>
 
-        <script>
-            async function initializeLiff() {
-            await liff.init({ liffId: '2002290922-O7vx3Jj7' });
-    
-            if (liff.isLoggedIn()) {
-                getUserProfile();
-            } else {
-                liff.login();
-            }
-        }
-    
-        async function sendFlexMessage() {
-      const flexMessage = {
-           type: 'flex',
-				altText: 'จดบันทึกเวลางาน',
-				contents: {
-					type: 'bubble',
-					direction: 'ltr',
-					body: {
-						type: 'box',
-						layout: 'vertical',
-						spacing: 'md',
-						contents: [
-							{
-                          type: 'box',
-                          layout: 'horizontal',
-                          contents: [
-                              {
-                                  type: 'text',
-                                  text: 'บันทึกเวลางาน',
-                                  weight: 'bold',
-                                  size: 'md',
-                                  align: 'start',
-                                  margin: 'sm',
-                                  contents: [],
-                              },
-                              {
-                                  type: 'text',
-                                  text: ` ${jobInput.value}`,
-                                  weight: 'bold',
-                                  size: 'md',
-                                  color: '#0D9608FF',
-                                  align: 'end',
-                                  contents: [],
-                              },
-                          ],
-                      },
-                      {
-                          type: 'separator',
-                      },
-                      {
-                          type: 'box',
-                          layout: 'vertical',
-                          spacing: 'sm',
-                          contents: [
-                              {
-                                  type: 'box',
-                                  layout: 'baseline',
-                                  contents: [
-                                      {
-                                          type: 'text',
-                                          text: 'ชื่อพนักงาน',
-                                          weight: 'bold',
-                                          size: 'sm',
-                                          margin: 'sm',
-                                          contents: [],
-                                      },
-                                      {
-                                          type: 'text',
-                                          text: `${columnBData.value}`,
-                                          size: 'sm',
-                                          color: '#000000FF',
-                                          align: 'end',
-                                          contents: [],
-                                      },
-                                  ],
-                              },
-                              {
-                                  type: 'box',
-                                  layout: 'baseline',
-                                  contents: [
-                                      {
-                                          type: 'text',
-                                          text: 'รหัสพนักงาน',
-                                          weight: 'bold',
-                                          size: 'sm',
-                                          flex: 0,
-                                          margin: 'sm',
-                                          contents: [],
-                                      },
-                                      {
-                                          type: 'text',
-                                          text:  `${roleInput.value}`,
-                                          size: 'sm',
-                                          color: '#000000FF',
-                                          align: 'end',
-                                          contents: [],
-                                      },
-                                  ],
-                              },
-                          ],
-                      },
-                      {
-                          type: 'separator',
-                      },
-                      {
-                          type: 'box',
-                          layout: 'vertical',
-                          contents: [
-                              {
-                                  type: 'box',
-                                  layout: 'baseline',
-                                  contents: [
-                                      {
-                                          type: 'text',
-                                          text: 'วันที่',
-                                          weight: 'bold',
-                                          contents: [],
-                                      },
-                                      {
-                                          type: 'text',
-                                          text: `${todayInput.value}`,
-                                          weight: 'bold',
-                                          align: 'end',
-                                          contents: [],
-                                      },
-                                  ],
-                              },
-                              {
-                                  type: 'box',
-                                  layout: 'baseline',
-                                  contents: [
-                                      {
-                                          type: 'text',
-                                          text: 'เวลา',
-                                          weight: 'bold',
-                                          contents: [],
-                                      },
-                                      {
-                                          type: 'text',
-                                          text: `${currentTime.value}`,
-                                          weight: 'bold',
-                                          size: 'xl',
-                                          color: '#EF2F14FF',
-                                          align: 'end',
-                                          contents: [],
-                                      },
-                                  ],
-                              },
-                          ],
-                      },
-                      {
-                          type: 'separator',
-                      },
-                      {
-                          type: 'box',
-                          layout: 'vertical',
-                          spacing: 'xs',
-                          margin: 'sm',
-                          contents: [
-                              {
-                                  type: 'text',
-                                  text: 'สถานที่',
-                                  weight: 'bold',
-                                  size: 'sm',
-                                  margin: 'md',
-                                  contents: [],
-                              },
-                              {
-                                  type: 'text',
-                                  text:  `${fullAddressInput.value}`,
-                                  wrap: true,
-                                  contents: [],
-                              },
-                          ],
-                      },
-                  ],
-              },
-          },
-      };
-    
-      await liff.sendMessages([flexMessage]);
-      liff.closeWindow(); // Close the LIFF window
-    }
-    </script>
 <script>
        
             function updateDateTime() {
@@ -703,49 +517,51 @@
             }
         }
 
-       function displayLocation(position) {
-    const latitudeElement = document.getElementById("latitude");
-    const longitudeElement = document.getElementById("longitude");
-    const fullAddressElement = document.getElementById("fullAddress");
-    const latitudeInput = document.getElementById("latitudeInput");
-    const longitudeInput = document.getElementById("longitudeInput");
-    const fullAddressInput = document.getElementById("fullAddressInput");
-    const mapIframe = document.getElementById("mapIframe");
+        function displayLocation(position) {
+            const latitudeElement = document.getElementById("latitude");
+            const longitudeElement = document.getElementById("longitude");
+            const fullAddressElement = document.getElementById("fullAddress");
+            const latitudeInput = document.getElementById("latitudeInput");
+            const longitudeInput = document.getElementById("longitudeInput");
+            const fullAddressInput = document.getElementById("fullAddressInput");
+            const mapIframe = document.getElementById("mapIframe");
 
-    const latitude = position.coords.latitude;
-    const longitude = position.coords.longitude;
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+            const fullAddress = position.coords.fullAddress;
 
-    latitudeElement.innerText = `Latitude: ${latitude}`;
-    longitudeElement.innerText = `Longitude: ${longitude}`;
+            latitudeElement.innerText = `Latitude: ${latitude}`;
+            longitudeElement.innerText = `Longitude: ${longitude}`;
+            longitudeElement.innerText = `Longitude: ${longitude}`;
 
-    // Update the hidden input fields with the latitude and longitude values
-    latitudeInput.value = latitude;
-    longitudeInput.value = longitude;
+            // Update the hidden input fields with the latitude and longitude values
+            latitudeInput.value = latitude;
+            longitudeInput.value = longitude;
 
-    // Use OpenStreetMap Nominatim for reverse geocoding
-    const nominatimUrl = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`;
+            // Use Google Maps Geocoding API to get the full address
+            const geocodingApiUrl = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=AIzaSyAAALd-dexHFg75tN38vlGqj_WDWexPxZc`;
 
-    fetch(nominatimUrl)
-        .then(response => response.json())
-        .then(data => {
-            if (data.display_name) {
-                const fullAddress = data.display_name;
-                fullAddressElement.innerText = `ที่อยู่ของคุณ: ${fullAddress}`;
-                // Set the value of the full address input
-                fullAddressInput.value = fullAddress;
-            } else {
-                fullAddressElement.innerText = "Unable to retrieve full address.";
-            }
-        })
-        .catch(error => {
-            console.error("Error fetching geocoding data:", error);
-            fullAddressElement.innerText = "Error fetching geocoding data.";
-        });
+            fetch(geocodingApiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.results && data.results.length > 0) {
+                        const fullAddress = data.results[0].formatted_address;
+                        fullAddressElement.innerText = `ที่อยู่ของคุณ: ${fullAddress}`;
+                        // Set the value of the full address input
+                        fullAddressInput.value = fullAddress;
+                    } else {
+                        fullAddressElement.innerText = "Unable to retrieve full address.";
+                    }
+                })
+                .catch(error => {
+                    console.error("Error fetching geocoding data:", error);
+                    fullAddressElement.innerText = "Error fetching geocoding data.";
+                });
 
-    // Create URL for OpenStreetMap using the obtained location
-    const openStreetMapUrl = `https://www.openstreetmap.org/?mlat=${latitude}&mlon=${longitude}#map=15/${latitude}/${longitude}`;
-    mapIframe.src = openStreetMapUrl;
-}
+            // Create URL for Google Maps using the obtained location
+            const mapsUrl = `https://www.google.com/maps/embed/v1/place?key=AIzaSyAAALd-dexHFg75tN38vlGqj_WDWexPxZc&q=${latitude},${longitude}`;
+            mapIframe.src = mapsUrl;
+        }
 
         </script>
         <script>
