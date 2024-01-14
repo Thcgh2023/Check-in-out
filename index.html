@@ -703,51 +703,49 @@
             }
         }
 
-        function displayLocation(position) {
-            const latitudeElement = document.getElementById("latitude");
-            const longitudeElement = document.getElementById("longitude");
-            const fullAddressElement = document.getElementById("fullAddress");
-            const latitudeInput = document.getElementById("latitudeInput");
-            const longitudeInput = document.getElementById("longitudeInput");
-            const fullAddressInput = document.getElementById("fullAddressInput");
-            const mapIframe = document.getElementById("mapIframe");
+       function displayLocation(position) {
+    const latitudeElement = document.getElementById("latitude");
+    const longitudeElement = document.getElementById("longitude");
+    const fullAddressElement = document.getElementById("fullAddress");
+    const latitudeInput = document.getElementById("latitudeInput");
+    const longitudeInput = document.getElementById("longitudeInput");
+    const fullAddressInput = document.getElementById("fullAddressInput");
+    const mapIframe = document.getElementById("mapIframe");
 
-            const latitude = position.coords.latitude;
-            const longitude = position.coords.longitude;
-            const fullAddress = position.coords.fullAddress;
+    const latitude = position.coords.latitude;
+    const longitude = position.coords.longitude;
 
-            latitudeElement.innerText = `Latitude: ${latitude}`;
-            longitudeElement.innerText = `Longitude: ${longitude}`;
-            longitudeElement.innerText = `Longitude: ${longitude}`;
+    latitudeElement.innerText = `Latitude: ${latitude}`;
+    longitudeElement.innerText = `Longitude: ${longitude}`;
 
-            // Update the hidden input fields with the latitude and longitude values
-            latitudeInput.value = latitude;
-            longitudeInput.value = longitude;
+    // Update the hidden input fields with the latitude and longitude values
+    latitudeInput.value = latitude;
+    longitudeInput.value = longitude;
 
-            // Use Google Maps Geocoding API to get the full address
-            const geocodingApiUrl = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=AIzaSyAAALd-dexHFg75tN38vlGqj_WDWexPxZc`;
+    // Use OpenStreetMap Nominatim for reverse geocoding
+    const nominatimUrl = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`;
 
-            fetch(geocodingApiUrl)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.results && data.results.length > 0) {
-                        const fullAddress = data.results[0].formatted_address;
-                        fullAddressElement.innerText = `ที่อยู่ของคุณ: ${fullAddress}`;
-                        // Set the value of the full address input
-                        fullAddressInput.value = fullAddress;
-                    } else {
-                        fullAddressElement.innerText = "Unable to retrieve full address.";
-                    }
-                })
-                .catch(error => {
-                    console.error("Error fetching geocoding data:", error);
-                    fullAddressElement.innerText = "Error fetching geocoding data.";
-                });
+    fetch(nominatimUrl)
+        .then(response => response.json())
+        .then(data => {
+            if (data.display_name) {
+                const fullAddress = data.display_name;
+                fullAddressElement.innerText = `ที่อยู่ของคุณ: ${fullAddress}`;
+                // Set the value of the full address input
+                fullAddressInput.value = fullAddress;
+            } else {
+                fullAddressElement.innerText = "Unable to retrieve full address.";
+            }
+        })
+        .catch(error => {
+            console.error("Error fetching geocoding data:", error);
+            fullAddressElement.innerText = "Error fetching geocoding data.";
+        });
 
-            // Create URL for Google Maps using the obtained location
-            const mapsUrl = `https://www.google.com/maps/embed/v1/place?key=AIzaSyAAALd-dexHFg75tN38vlGqj_WDWexPxZc&q=${latitude},${longitude}`;
-            mapIframe.src = mapsUrl;
-        }
+    // Create URL for OpenStreetMap using the obtained location
+    const openStreetMapUrl = `https://www.openstreetmap.org/?mlat=${latitude}&mlon=${longitude}#map=15/${latitude}/${longitude}`;
+    mapIframe.src = openStreetMapUrl;
+}
 
         </script>
         <script>
