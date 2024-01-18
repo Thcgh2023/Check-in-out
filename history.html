@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ประวัติการบันทึก</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+ <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai&display=swap" rel="stylesheet">
     <script src="https://static.line-scdn.net/liff/edge/2.1/sdk.js"></script>
@@ -17,104 +16,71 @@
         font-family: 'Noto Sans Thai', sans-serif;
     }
 
-    input {
+
+    input{
         border: 1px solid white;
     }
-
     table {
+        font-family: arial, sans-serif;
         border-collapse: collapse;
         width: 100%;
-        font-size: 0.8rem;
+        font-size: 0.7rem;
     }
 
-    th,
-    td {
-        border: 1px solid #EAF0FE;
+    td,
+    th {
+        border: 1px solid #7d8ad5;
         text-align: left;
         padding: 8px;
-        width: 25%;
+		width:25%;
     }
 
     tr:nth-child(even) {
         background-color: #ffffff;
-        font-size: 0.8rem;
+        font-size: 0.7rem;
     }
-
-    label {
-        font-size: 0.8rem;
-        font-weight: bold;
+	label {
+    font-size: 0.8rem;
+    font-weight: bold;
     }
-
-    .headertable {
-        background-color: #1F3D77;
-        color: white;
+    .headertable{
+    background-color: #213396;
+    color: white;
     }
-
-    .card {
-        padding: 20px;
-        border-radius: 5px;
+    .card{
+        padding: 10px;
     }
-    .title {
-    padding:10px 20px;
-    background: #ffffff;
-    color: #1f3d77;
-    border-radius: 5px;
-    border: 1px solid;
-	font-weight: bold;
-}
 </style>
 
-<body>
-    <div style="padding:0 20px;">
-		 <input type="text" id="userId" name="userId" style="color: white;" />
-        <div class="title">บันทึกเวลางาน ย้อนหลัง</div>
-		<div class="card">
-       <label for="columnAData">ชื่อพนักงาน </label>
-            <input type="text" id="columnAData" name="columnAData" />
-            <br>
-            <label for="columnBData">รหัสพนักงาน </label>
-            <input type="text" class="form-control" id="columnBData" name="columnBData" />
-        </div>
-        <table class="card headertable">
-            <tr>
-                <th>สถานะ</th>
-                <th>หมายเหตุ</th>
-                <th>วันที่</th>
-                <th>เวลา</th>
-            </tr>
-        </table>
-        <table id="data-table"></table>
-    </div>
+<script>
+  let inputEventCounter = 0;
 
-    <script>
-        let inputEventCounter = 0;
-    
-        window.onload = function () {
-            initializeLiff();
-        };
-    
-        async function initializeLiff() {
-            await liff.init({ liffId: '2002689552-GVpxdZ84' }); // Replace with your LIFF ID
-    
-            if (liff.isLoggedIn()) {
-                getUserProfile();
-            } else {
-                liff.login();
-            }
-        }
-    
-        async function getUserProfile() {
-            try {
-                const profile = await liff.getProfile();
-                document.getElementById('userId').value = profile.userId;
-    
-                // Trigger search when user ID is retrieved
-                fetchData();
-            } catch (error) {
-                console.error('Error getting profile data:', error);
-            }
-        }
-    
+  window.onload = function () {
+      initializeLiff();
+  };
+
+  async function initializeLiff() {
+      await liff.init({ liffId: '2002689552-GVpxdZ84' }); // Replace with your LIFF ID
+
+      if (liff.isLoggedIn()) {
+          getUserProfile();
+      } else {
+          liff.login();
+      }
+  }
+
+  async function getUserProfile() {
+      try {
+          const profile = await liff.getProfile();
+          document.getElementById('userId').value = profile.userId;
+         
+          // Trigger search when user ID is retrieved
+          searchData();
+      } catch (error) {
+          console.error('Error getting profile data:', error);
+      }
+  }
+
   async function fetchData() {
     try {
         const values = await fetchValues();
@@ -163,56 +129,75 @@ function buildTable(values) {
     });
 }
 
-    
-        // Reset the counter after every third input event
-        document.getElementById('userId').addEventListener('input', () => {
-            inputEventCounter++;
-            if (inputEventCounter === 3) {
-                inputEventCounter = 0;
-            }
-    
-            // Run the search logic every third input event
-            if (inputEventCounter === 0) {
-                searchData();
-            }
-        });
-    
-        function searchData() {
-            const searchInput = document.getElementById('userId');
-            const filter = searchInput.value.toUpperCase();
-            const table = document.getElementById('data-table');
-            const rows = table.getElementsByTagName('tr');
-    
-            for (let i = 0; i < rows.length; i++) {
-                const cells = rows[i].getElementsByTagName('td');
-                let shouldDisplay = false;
-    
-                for (let j = 0; j < cells.length; j++) {
-                    const cellText = cells[j].textContent || cells[j].innerText;
-    
-                    if (cellText.toUpperCase().indexOf(filter) > -1) {
-                        shouldDisplay = true;
-    
-                        // Display data related to column A in the corresponding input field
-                        const columnADataInput = document.getElementById('columnAData');
-                        const columnAData = rows[i].getElementsByTagName('td')[2].textContent || rows[i].getElementsByTagName('td')[2].innerText;
-                        columnADataInput.value = columnAData;
-    
-                        // Display data related to column B in the corresponding input field
-                        const columnBDataInput = document.getElementById('columnBData');
-                        const columnBData = rows[i].getElementsByTagName('td')[3].textContent || rows[i].getElementsByTagName('td')[3].innerText;
-                        columnBDataInput.value = columnBData;
-    
-                        break;
-                    }
-                }
-    
-                rows[i].style.display = shouldDisplay ? '' : 'none';
-            }
-        }
+  // Reset the counter after every third input event
+  document.getElementById('userId').addEventListener('input', () => {
+      inputEventCounter++;
+      if (inputEventCounter === 3) {
+          inputEventCounter = 0;
+      }
 
-    </script>
-       <script>
+      // Run the search logic every third input event
+      if (inputEventCounter === 0) {
+          searchData();
+      }
+  });
+
+  function searchData() {
+      const searchInput = document.getElementById('userId');
+      const filter = searchInput.value.toUpperCase();
+      const table = document.getElementById('data-table');
+      const rows = table.getElementsByTagName('tr');
+
+      for (let i = 0; i < rows.length; i++) {
+          const cells = rows[i].getElementsByTagName('td');
+          let shouldDisplay = false;
+
+          for (let j = 0; j < cells.length; j++) {
+              const cellText = cells[j].textContent || cells[j].innerText;
+
+              if (cellText.toUpperCase().indexOf(filter) > -1) {
+                  shouldDisplay = true;
+
+                  // Display data related to column A in the corresponding input field
+                  const columnADataInput = document.getElementById('columnAData');
+                  const columnAData =
+                      rows[i].getElementsByTagName('td')[2].textContent || rows[i].getElementsByTagName('td')[2].innerText;
+                  columnADataInput.value = columnAData;
+
+                  // Display data related to column B in the corresponding input field
+                  const columnBDataInput = document.getElementById('columnBData');
+                  const columnBData =
+                      rows[i].getElementsByTagName('td')[3].textContent || rows[i].getElementsByTagName('td')[3].innerText;
+                  columnBDataInput.value = columnBData;
+
+                  break;
+              }
+          }
+
+          rows[i].style.display = shouldDisplay ? '' : 'none';
+      }
+  }
+</script>
+
+<body>
+    <div class="card">
+    <input type="text" id="userId" name="userId" value="U0f1478ccfc132f196c7e5c0b574b22bd"  style="color: white;" />
+    <br>
+    <label for="columnAData">ชื่อพนักงาน </label>
+    <input type="text" id="columnAData" name="columnAData" />
+    <br>
+    <label for="columnBData">รหัสพนักงาน </label>
+    <input type="text" class="form-control" id="columnBData" name="columnBData" />
+    </div>
+    <br>
+	<table class="headertable">
+		<td>สถานะ</td>
+		<td>หมายเหตุ</td>
+		<td>วันที่</td>
+		<td>เวลา</td>
+	</table>
+    <table id="data-table"></table>
+    <script>
         // Replace YOUR_API_KEY with your actual API key
         const apiKey = 'AIzaSyAHc1bZMPXE9NehuqgmjuWPsXpGds9wUCE';
 
