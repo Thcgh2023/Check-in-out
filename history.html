@@ -115,57 +115,54 @@
             }
         }
     
-   async function fetchData() {
-            try {
-                const response = await fetch(apiUrl);
-                const data = await response.json();
-                const values = data.values;
+  async function fetchData() {
+    try {
+        const values = await fetchValues();
+        buildTable(values);
 
-                // Sort values array based on the first column (index 0) in descending order
-                values.sort((a, b) => b[0].localeCompare(a[0]));
-
-                // Build the table HTML
-                const table = document.getElementById('data-table');
-                table.innerHTML = ''; // Clear previous data
-
-                // Limit the iteration to 5 rows
-                for (let rowIndex = 0; rowIndex < Math.min(values.length, 30); rowIndex++) {
-                    const row = values[rowIndex];
-                    const tr = document.createElement('tr');
-
-                    row.forEach((cell, cellIndex) => {
-                        const td = document.createElement('td');
-
-                        // Format date for column 7 (index 6)
-                        if (cellIndex === 6) {
-                            const date = new Date(cell);
-                            td.textContent = date.toLocaleDateString('en-GB'); // Change 'en-GB' to your preferred locale
-                        } else {
-                            td.textContent = cell;
-                        }
-
-                        // Hide the first column (index 0)
-                        if ([0, 1, 2, 3, 8, 9, 10, 11].includes(cellIndex)) {
-                            td.style.display = 'none';
-                        }
-
-                        tr.appendChild(td);
-                    });
-
-                    table.appendChild(tr);
-
-                    // Hide the seventh row (index 6)
-                    if (rowIndex === 31) {
-                        tr.style.display = 'none';
-                    }
-                }
-
-                // Trigger search when new data is fetched
-                searchData();
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
+        // Trigger search only if the search input is not empty
+        const searchInput = document.getElementById('userId');
+        if (searchInput.value.trim() !== '') {
+            searchData();
         }
+    } catch (error) {
+        console.error('Error fetching data:', error);
+    }
+}
+
+async function fetchValues() {
+    const response = await fetch(apiUrl);
+    const data = await response.json();
+    return data.values;
+}
+
+function buildTable(values) {
+    const table = document.getElementById('data-table');
+    table.innerHTML = ''; // Clear previous data
+
+    values.forEach((row, rowIndex) => {
+        const tr = document.createElement('tr');
+        row.forEach((cell, cellIndex) => {
+            const td = document.createElement('td');
+            td.textContent = cell;
+
+            // Hide specific columns
+            const hiddenColumns = [0, 1, 2, 3, 8, 9, 10, 11];
+            if (hiddenColumns.includes(cellIndex)) {
+                td.style.display = 'none';
+            }
+
+            tr.appendChild(td);
+        });
+        table.appendChild(tr);
+
+        // Hide the seventh row (index 6)
+        if (rowIndex === 6) {
+            tr.style.display = 'none';
+        }
+    });
+}
+
     
         // Reset the counter after every third input event
         document.getElementById('userId').addEventListener('input', () => {
