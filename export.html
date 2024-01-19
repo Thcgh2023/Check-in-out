@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Google Sheets Data</title>
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+
+    .filter-container {
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="filter-container">
+    <label for="dateFilter">Filter by Date:</label>
+    <input type="date" id="dateFilter" onchange="filterData()">
+  </div>
+
+  <table id="dataTable">
+    <tbody>
+    </tbody>
+  </table>
+  <button onclick="exportToTxt()">Export to TXT</button>
+
+  <script>
+    const SPREADSHEET_ID = '1gErfBELM6hSGTqx0xapkAfdhRjZ_BK7zhXMdRcLWm2w';
+    const API_KEY = 'AIzaSyAHc1bZMPXE9NehuqgmjuWPsXpGds9wUCE';
+    const sheetName = 'Export'; // Change to your sheet name
+    let data = [];
+
+    function loadSheet() {
+      const url = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${sheetName}?key=${API_KEY}`;
+
+      fetch(url)
+        .then(response => response.json())
+        .then(response => {
+          data = response.values;
+          renderTable();
+        })
+        .catch(error => console.error('Error loading Google Sheet:', error));
+    }
+
+    function renderTable() {
+      const tableBody = document.querySelector('#dataTable tbody');
+      tableBody.innerHTML = '';
+
+      data.forEach(row => {
+        const [date, data1,] = row;
+        const newRow = `<tr><td>${date}</td><td>${data1}</tr>`;
+        tableBody.innerHTML += newRow;
+      });
+    }
+
+    function filterData() {
+      const dateFilter = document.querySelector('#dateFilter').value;
+
+      if (dateFilter) {
+        const filteredData = data.filter(row => row[0] === dateFilter);
+        renderTable(filteredData);
+      } else {
+        renderTable();
+      }
+    }
+
+    // Load the sheet and render the initial table
+    window.onload = function() {
+      loadSheet();
+    };
+
+
+    function exportToTxt() {
+  const txtContent = convertDataToTxt();
+  downloadTxtFile(txtContent);
+}
+
+function convertDataToTxt() {
+  let txtContent = 'รหัสที่เครื่อง\t\tวันที่/เวลา\n';
+
+  data.forEach(row => {
+    const [date, data1] = row;
+    txtContent += `${date}\t${data1}\n`;
+  });
+
+  return txtContent;
+}
+
+function downloadTxtFile(content) {
+  const blob = new Blob([content], { type: 'text/plain' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'exported_data.txt';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+}
+
+  </script>
+</body>
+</html>
