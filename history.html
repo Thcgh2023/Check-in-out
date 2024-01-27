@@ -54,6 +54,8 @@
 
 <script>
   let inputEventCounter = 0;
+  let currentPage = 1;
+    const rowsPerPage = 20;
 
   window.onload = function () {
       initializeLiff();
@@ -103,31 +105,56 @@ async function fetchValues() {
 }
 
 function buildTable(values) {
-    const table = document.getElementById('data-table');
-    table.innerHTML = ''; // Clear previous data
+        const table = document.getElementById('data-table');
+        table.innerHTML = ''; // Clear previous data
 
-    values.forEach((row, rowIndex) => {
-        const tr = document.createElement('tr');
-        row.forEach((cell, cellIndex) => {
-            const td = document.createElement('td');
-            td.textContent = cell;
+        const startIndex = (currentPage - 1) * rowsPerPage;
+        const endIndex = startIndex + rowsPerPage;
 
-            // Hide specific columns
-            const hiddenColumns = [0, 1, 2, 3, 8, 9, 10, 11];
-            if (hiddenColumns.includes(cellIndex)) {
-                td.style.display = 'none';
+        values.slice(startIndex, endIndex).forEach((row, rowIndex) => {
+            const tr = document.createElement('tr');
+            row.forEach((cell, cellIndex) => {
+                const td = document.createElement('td');
+                td.textContent = cell;
+
+                // Hide specific columns
+                const hiddenColumns = [0, 1, 2, 3, 8, 9, 10, 11];
+                if (hiddenColumns.includes(cellIndex)) {
+                    td.style.display = 'none';
+                }
+
+                tr.appendChild(td);
+            });
+            table.appendChild(tr);
+
+            // Hide the seventh row (index 6)
+            if (rowIndex === 6) {
+                tr.style.display = 'none';
             }
-
-            tr.appendChild(td);
         });
-        table.appendChild(tr);
+    }
 
-        // Hide the seventh row (index 6)
-        if (rowIndex === 6) {
-            tr.style.display = 'none';
+    function updatePagination() {
+        const totalPages = Math.ceil(values.length / rowsPerPage);
+        const paginationInfo = document.getElementById('pagination-info');
+        paginationInfo.textContent = `Page ${currentPage} of ${totalPages}`;
+    }
+
+    // Add these functions to handle pagination controls
+    function nextPage() {
+        const totalPages = Math.ceil(values.length / rowsPerPage);
+        if (currentPage < totalPages) {
+            currentPage++;
+            fetchData();
         }
-    });
-}
+    }
+
+    function prevPage() {
+        if (currentPage > 1) {
+            currentPage--;
+            fetchData();
+        }
+    }
 
   // Reset the counter after every third input event
   document.getElementById('userId').addEventListener('input', () => {
@@ -181,13 +208,18 @@ function buildTable(values) {
 
 <body>
     <div class="card">
-    <input type="text" id="userId" name="userId"   style="color: black;" />
+    <input type="text" id="userId" name="userId"  style="color: rgb(0, 0, 0);" />
     <br>
     <label for="columnAData">ชื่อพนักงาน </label>
     <input type="text" id="columnAData" name="columnAData" />
     <br>
     <label for="columnBData">รหัสพนักงาน </label>
     <input type="text" class="form-control" id="columnBData" name="columnBData" />
+    </div>
+    <div>
+        <button onclick="prevPage()">Previous Page</button>
+        <span id="pagination-info"></span>
+        <button onclick="nextPage()">Next Page</button>
     </div>
     <br>
 	<table class="headertable">
