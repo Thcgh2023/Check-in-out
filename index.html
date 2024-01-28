@@ -826,84 +826,79 @@
     const apiUrl = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheet2Id}/values/MEMBER?key=${apimapKey}`;
 
     // Function to fetch data from Google Sheets API
-	async function fetchData() {
-	try {
-	const response = await fetch(apiUrl);
-	const data = await response.json();
-	
-	// Extract values from the response
-	const values = data.values;
-	
-	// Build the table HTML
-	const table = document.getElementById('data-table');
-	table.innerHTML = ''; // Clear previous data
-	
-	// Limit the loop to 10 rows
-	const rowsToDisplay = Math.min(values.length, 30);
-	
-	for (let i = 0; i < rowsToDisplay; i++) {
-	    const tr = document.createElement('tr');
-	    const row = values[i];
-	
-	    row.forEach(cell => {
-		const td = document.createElement('td');
-		td.textContent = cell;
-		tr.appendChild(td);
-	    });
-	
-	    table.appendChild(tr);
-	}
-	} catch (error) {
-	console.error('Error fetching data:', error);
-	}
-	}
+async function fetchData() {
+    try {
+        const response = await fetch(apiUrl);
+        const data = await response.json();
 
-    // Call the fetchData function when the page loads
-    fetchData();
+        // Extract values from the response
+        const values = data.values;
 
-    function searchData() {
-    const searchInput = document.getElementById('userId');
-    const filter = searchInput.value.toUpperCase();
-    const table = document.getElementById('data-table');
-    const rows = table.getElementsByTagName('tr');
+        // Build the table HTML
+        const table = document.getElementById('data-table');
+        table.innerHTML = ''; // Clear previous data
 
-    for (let i = 0; i < rows.length; i++) {
-    const cells = rows[i].getElementsByTagName('td');
-    let shouldDisplay = false;
-
-    for (let j = 0; j < cells.length; j++) {
-        const cellText = cells[j].textContent || cells[j].innerText;
-
-    if (cellText.toUpperCase().indexOf(filter) > -1) {
-        shouldDisplay = true;
-
-        // Display data related to column A in the corresponding input field
-        const columnADataInput = document.getElementById('columnAData');
-        const columnAData = rows[i].getElementsByTagName('td')[0].textContent || rows[i].getElementsByTagName('td')[0].innerText;
-        columnADataInput.value = columnAData;
-
-        // Display data related to column B in the corresponding input field
-        const columnBDataInput = document.getElementById('columnBData');
-        const columnBData = rows[i].getElementsByTagName('td')[1].textContent || rows[i].getElementsByTagName('td')[1].innerText;
-        columnBDataInput.value = columnBData;
-
-        // Display data related to column B in the corresponding input field
-        const roleInputInput = document.getElementById('roleInput');
-        const roleInput = rows[i].getElementsByTagName('td')[2].textContent || rows[i].getElementsByTagName('td')[1].innerText;
-        roleInputInput.value = roleInput;
-
-        // Display data related to column D in the corresponding input field
-        const columnDDataInput = document.getElementById('columnDData');
-        const columnDData = rows[i].getElementsByTagName('td')[3].textContent || rows[i].getElementsByTagName('td')[1].innerText;
-        columnDDataInput.value = columnDData;
-
-        break;
-        }
+        values.forEach(row => {
+            const tr = document.createElement('tr');
+            row.forEach(cell => {
+                const td = document.createElement('td');
+                td.textContent = cell;
+                tr.appendChild(td);
+            });
+            table.appendChild(tr);
+        });
+    } catch (error) {
+        console.error('Error fetching data:', error);
     }
+}
 
-        rows[i].style.display = shouldDisplay ? '' : 'none';
-        }
+// Call the fetchData function when the page loads
+fetchData();
+
+function searchData() {
+const searchInput = document.getElementById('userId');
+const filter = searchInput.value.toUpperCase();
+const table = document.getElementById('data-table');
+const rows = table.getElementsByTagName('tr');
+
+for (let i = 0; i < rows.length; i++) {
+const cells = rows[i].getElementsByTagName('td');
+let shouldDisplay = false;
+
+for (let j = 0; j < cells.length; j++) {
+    const cellText = cells[j].textContent || cells[j].innerText;
+
+if (cellText.toUpperCase().indexOf(filter) > -1) {
+    shouldDisplay = true;
+
+    // Display data related to column A in the corresponding input field
+    const columnADataInput = document.getElementById('columnAData');
+    const columnAData = rows[i].getElementsByTagName('td')[0].textContent || rows[i].getElementsByTagName('td')[0].innerText;
+    columnADataInput.value = columnAData;
+
+    // Display data related to column B in the corresponding input field
+    const columnBDataInput = document.getElementById('columnBData');
+    const columnBData = rows[i].getElementsByTagName('td')[1].textContent || rows[i].getElementsByTagName('td')[1].innerText;
+    columnBDataInput.value = columnBData;
+
+    // Display data related to column B in the corresponding input field
+    const roleInputInput = document.getElementById('roleInput');
+    const roleInput = rows[i].getElementsByTagName('td')[2].textContent || rows[i].getElementsByTagName('td')[1].innerText;
+    roleInputInput.value = roleInput;
+
+    // Display data related to column D in the corresponding input field
+    const columnDDataInput = document.getElementById('columnDData');
+    const columnDData = rows[i].getElementsByTagName('td')[3].textContent || rows[i].getElementsByTagName('td')[1].innerText;
+    columnDDataInput.value = columnDData;
+
+    break;
     }
+}
+
+    rows[i].style.display = shouldDisplay ? '' : 'none';
+    }
+}
+
 
 </script>
 </body>
