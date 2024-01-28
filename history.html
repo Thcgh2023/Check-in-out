@@ -1,347 +1,348 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ประวัติการบันทึก</title>
     <script src="https://static.line-scdn.net/liff/edge/2.1/sdk.js"></script>
-    <!-- Add this line to include SweetAlert library -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-</head>
-<style>
+  </head>
+
+  <style>
     input {
-        border: 1px solid white;
+      border: 1px solid white;
     }
 
     table {
-        font-family: arial, sans-serif;
-        border-collapse: collapse;
-        width: 100%;
-        font-size: 0.7rem;
+      font-family: arial, sans-serif;
+      border-collapse: collapse;
+      width: 100%;
+      font-size: 0.7rem;
     }
 
     td,
     th {
-        border: 1px solid #263585;
-        text-align: left;
-        padding: 8px;
-        width: 25%;
+      border: 1px solid #263585;
+      text-align: left;
+      padding: 8px;
+      width: 25%;
     }
 
     tr:nth-child(even) {
-        background-color: #ffffff;
-        font-size: 0.7rem;
+      background-color: #ffffff;
+      font-size: 0.7rem;
     }
 
     label {
-        font-size: 0.8rem;
-        font-weight: bold;
+      font-size: 0.8rem;
+      font-weight: bold;
     }
 
     .headertable {
-        background-color: #455089;
-        color: white;
+      background-color: #455089;
+      color: white;
     }
 
     .headertable2 {
-        background-color: #FFF;
-        color: #000;
+      background-color: #fff;
+      color: #000;
     }
 
     .card {
-        padding: 10px;
+      padding: 10px;
     }
 
     #pagination-controls {
-        margin-top: 10px;
+      margin-top: 10px;
     }
 
     #pagination-controls button {
-        margin: 0 5px;
-        padding: 5px 10px;
-        cursor: pointer;
+      margin: 0 5px;
+      padding: 5px 10px;
+      cursor: pointer;
     }
 
     #pagination-controls button.active {
-        background-color: #7d8ad5;
-        color: white;
+      background-color: #7d8ad5;
+      color: white;
     }
-</style>
+  </style>
 
-<script>
+  <script>
     let inputEventCounter = 0;
     const itemsPerPage = 20; // Number of items to display per page
     let currentPage = 1;
 
-    window.onload = function () {
-        initializeLiff(), getUserProfile();
-    };
+    // window.onload = function () {
+    //     initializeLiff(),getUserProfile();
+    // };
 
     async function initializeLiff() {
-        await liff.init({ liffId: '2002689552-GVpxdZ84' }); // Replace with your LIFF ID
+      await liff.init({ liffId: "2002689552-GVpxdZ84" }); // Replace with your LIFF ID
 
-        if (liff.isLoggedIn()) {
-            getUserProfile();
-        } else {
-            liff.login();
-        }
+      if (liff.isLoggedIn()) {
+        getUserProfile();
+      } else {
+        liff.login();
+      }
     }
-
     async function getUserProfile() {
-        try {
-            const profile = await liff.getProfile();
-            document.getElementById('userId').value = profile.userId;
+      try {
+        const profile = await liff.getProfile();
+        document.getElementById("userId").value = profile.userId;
 
-            // Trigger search when user ID is retrieved
-            fetchData(); // Fetch data from the Google Sheets
-            searchData(); // Perform initial search and display data
-        } catch (error) {
-            console.error('Error getting profile data:', error);
-        }
+        // Trigger search when user ID is retrieved
+        fetchData(); // Fetch data from the Google Sheets
+        searchData(); // Perform initial search and display data
+      } catch (error) {
+        console.error("Error getting profile data:", error);
+      }
     }
 
     async function fetchData() {
-        try {
-            const values = await fetchValues();
-            const filteredValues = filterData(values); // Filter the data
-            buildTable(filteredValues);
-        } catch (error) {
-            console.error('Error fetching data:', error);
-        }
+      try {
+        const values = await fetchValues();
+        const filteredValues = filterData(values); // Filter the data
+        buildTable(filteredValues);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
     }
 
     async function fetchValues() {
-        const response = await fetch(apiUrl);
-        const data = await response.json();
-        return data.values;
+      const response = await fetch(apiUrl);
+      const data = await response.json();
+      return data.values;
     }
 
     function filterData(values) {
-        const searchInput = document.getElementById('userId');
-        const filter = searchInput.value.toUpperCase();
+      const searchInput = document.getElementById("userId");
+      const filter = searchInput.value.toUpperCase();
 
-        // Use filter to find rows that match the search criteria
-        return values.filter((row) => {
-            for (let j = 0; j < row.length; j++) {
-                const cellText = row[j].toUpperCase();
-                if (cellText.indexOf(filter) > -1) {
-                    return true;
-                }
-            }
-            return false;
-        });
+      // Use filter to find rows that match the search criteria
+      return values.filter((row) => {
+        for (let j = 0; j < row.length; j++) {
+          const cellText = row[j].toUpperCase();
+          if (cellText.indexOf(filter) > -1) {
+            return true;
+          }
+        }
+        return false;
+      });
     }
     // Add a new constant for the additional table ID
-    const additionalTableId = 'additional-table';
+    const additionalTableId = "additional-table";
 
     async function fetchData() {
-        try {
-            // Show loading alert using SweetAlert
-            Swal.fire({
-                title: 'กำลังโหลดข้อมูล...',
-                allowOutsideClick: false,
-                onBeforeOpen: () => {
-                    Swal.showLoading();
-                }
-            });
-
-            const values = await fetchValues();
-            const filteredValues = filterData(values);
-            buildTable('data-table', filteredValues);
-            buildAdditionalTable('additional-table', filteredValues);
-
-            // Close loading alert after data is loaded
-            Swal.close();
-        } catch (error) {
-            console.error('Error fetching data:', error);
-            // You can also show an error alert using Swal.fire() here
-        }
+      try {
+        const values = await fetchValues();
+        const filteredValues = filterData(values);
+        buildTable("data-table", filteredValues);
+        buildAdditionalTable("additional-table", filteredValues); // Call the new function
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
     }
 
-
     function buildAdditionalTable(tableId, values) {
-        const table = document.getElementById(tableId);
-        table.innerHTML = '';
+      const table = document.getElementById(tableId);
+      table.innerHTML = "";
 
-        const row = values[0]; // Limit to the first row only
-        const tr = document.createElement('tr');
+      const row = values[0]; // Limit to the first row only
+      const tr = document.createElement("tr");
 
-        // Display only columns C and D
-        for (let cellIndex = 2; cellIndex <= 3; cellIndex++) {
-            const td = document.createElement('td');
-            td.textContent = row[cellIndex];
+      // Display only columns C and D
+      for (let cellIndex = 2; cellIndex <= 3; cellIndex++) {
+        const td = document.createElement("td");
+        td.textContent = row[cellIndex];
 
-            // You can apply additional styling or modifications here if needed
+        // You can apply additional styling or modifications here if needed
 
-            tr.appendChild(td);
+        tr.appendChild(td);
+      }
+
+      table.appendChild(tr);
+    }
+
+    function buildTable(tableId, values) {
+      const table = document.getElementById(tableId);
+      table.innerHTML = "";
+
+      // Calculate start and end index for the current page
+      const startIndex = (currentPage - 1) * itemsPerPage;
+      const endIndex = startIndex + itemsPerPage;
+
+      const reversedValues = values.slice().reverse();
+
+      reversedValues.slice(startIndex, endIndex).forEach((row, rowIndex) => {
+        const tr = document.createElement("tr");
+        row.forEach((cell, cellIndex) => {
+          const td = document.createElement("td");
+          td.textContent = cell;
+
+          const hiddenColumns = [0, 1, 2, 3, 8, 9, 10, 11];
+          if (hiddenColumns.includes(cellIndex)) {
+            td.style.display = "none";
+          }
+
+          tr.appendChild(td);
+        });
+
+        // Hide the seventh row (index 6)
+        if (rowIndex === 6) {
+          tr.style.display = "none";
         }
 
         table.appendChild(tr);
+      });
+
+      updatePaginationControls(values.length);
     }
-
-
-    function buildTable(tableId, values) {
-        const table = document.getElementById(tableId);
-        table.innerHTML = '';
-
-        // Calculate start and end index for the current page
-        const startIndex = (currentPage - 1) * itemsPerPage;
-        const endIndex = startIndex + itemsPerPage;
-
-        const reversedValues = values.slice().reverse();
-
-        reversedValues.slice(startIndex, endIndex).forEach((row, rowIndex) => {
-            const tr = document.createElement('tr');
-            row.forEach((cell, cellIndex) => {
-                const td = document.createElement('td');
-                td.textContent = cell;
-
-                const hiddenColumns = [0, 1, 2, 3, 8, 9, 10, 11];
-                if (hiddenColumns.includes(cellIndex)) {
-                    td.style.display = 'none';
-                }
-
-                tr.appendChild(td);
-            });
-
-            // Hide the seventh row (index 6)
-            if (rowIndex === 6) {
-                tr.style.display = 'none';
-            }
-
-            table.appendChild(tr);
-        });
-
-        updatePaginationControls(values.length);
-    }
-
 
     function updatePaginationControls(totalItems) {
-        const totalPages = Math.ceil(totalItems / itemsPerPage);
-        const paginationControls = document.getElementById('pagination-controls');
-        paginationControls.innerHTML = '';
+      const totalPages = Math.ceil(totalItems / itemsPerPage);
+      const paginationControls = document.getElementById("pagination-controls");
+      paginationControls.innerHTML = "";
 
-        for (let i = 1; i <= totalPages; i++) {
-            const pageButton = document.createElement('button');
-            pageButton.textContent = i;
-            pageButton.addEventListener('click', () => {
-                currentPage = i;
-                fetchData();
-            });
+      for (let i = 1; i <= totalPages; i++) {
+        const pageButton = document.createElement("button");
+        pageButton.textContent = i;
+        pageButton.addEventListener("click", () => {
+          currentPage = i;
+          fetchData();
+        });
 
-            // Highlight the current page button
-            if (i === currentPage) {
-                pageButton.classList.add('active');
-            }
-
-            paginationControls.appendChild(pageButton);
+        // Highlight the current page button
+        if (i === currentPage) {
+          pageButton.classList.add("active");
         }
+
+        paginationControls.appendChild(pageButton);
+      }
     }
 
     // Reset the counter after every third input event
-    document.getElementById('userId').addEventListener('input', () => {
-        inputEventCounter++;
-        if (inputEventCounter === 3) {
-            inputEventCounter = 0;
-        }
+    document.getElementById("userId").addEventListener("input", () => {
+      inputEventCounter++;
+      if (inputEventCounter === 3) {
+        inputEventCounter = 0;
+      }
 
-        // Run the search logic every third input event
-        if (inputEventCounter === 0) {
-            searchData();
-        }
+      // Run the search logic every third input event
+      if (inputEventCounter === 0) {
+        searchData();
+      }
     });
 
     function searchData() {
-        console.log('Search function called');
+      console.log("Search function called");
 
-        const searchInput = document.getElementById('userId');
-        const filter = searchInput.value.toUpperCase();
-        console.log('Filter:', filter);
+      const searchInput = document.getElementById("userId");
+      const filter = searchInput.value.toUpperCase();
+      console.log("Filter:", filter);
 
-        const table = document.getElementById('data-table');
-        const rows = table.getElementsByTagName('tr');
+      const table = document.getElementById("data-table");
+      const rows = table.getElementsByTagName("tr");
 
-        for (let i = 0; i < rows.length; i++) {
-            const cells = rows[i].getElementsByTagName('td');
-            let shouldDisplay = false;
+      for (let i = 0; i < rows.length; i++) {
+        const cells = rows[i].getElementsByTagName("td");
+        let shouldDisplay = false;
 
-            for (let j = 0; j < cells.length; j++) {
-                const cellText = cells[j].textContent || cells[j].innerText;
+        for (let j = 0; j < cells.length; j++) {
+          const cellText = cells[j].textContent || cells[j].innerText;
 
-                if (cellText.toUpperCase().indexOf(filter) > -1) {
-                    shouldDisplay = true;
+          if (cellText.toUpperCase().indexOf(filter) > -1) {
+            shouldDisplay = true;
 
-                    // Display data related to column A in the corresponding input field
-                    const columnADataInput = document.getElementById('columnAData');
-                    const columnAData =
-                        rows[i].getElementsByTagName('td')[2].textContent || rows[i].getElementsByTagName('td')[2].innerText;
-                    columnADataInput.value = columnAData;
+            // Display data related to column A in the corresponding input field
+            const columnADataInput = document.getElementById("columnAData");
+            const columnAData =
+              rows[i].getElementsByTagName("td")[2].textContent ||
+              rows[i].getElementsByTagName("td")[2].innerText;
+            columnADataInput.value = columnAData;
 
-                    // Display data related to column B in the corresponding input field
-                    const columnBDataInput = document.getElementById('columnBData');
-                    const columnBData =
-                        rows[i].getElementsByTagName('td')[3].textContent || rows[i].getElementsByTagName('td')[3].innerText;
-                    columnBDataInput.value = columnBData;
+            // Display data related to column B in the corresponding input field
+            const columnBDataInput = document.getElementById("columnBData");
+            const columnBData =
+              rows[i].getElementsByTagName("td")[3].textContent ||
+              rows[i].getElementsByTagName("td")[3].innerText;
+            columnBDataInput.value = columnBData;
 
-                    console.log('i:', i, 'j:', j, 'columnAData:', columnAData, 'columnBData:', columnBData);
+            console.log(
+              "i:",
+              i,
+              "j:",
+              j,
+              "columnAData:",
+              columnAData,
+              "columnBData:",
+              columnBData
+            );
 
-                    break;
-                }
-            }
-
-            rows[i].style.display = shouldDisplay ? '' : 'none';
+            break;
+          }
         }
+
+        rows[i].style.display = shouldDisplay ? "" : "none";
+      }
     }
-    document.getElementById('userId').addEventListener('input', () => {
-        inputEventCounter++;
-        if (inputEventCounter === 3) {
-            inputEventCounter = 0;
-        }
 
-        // Run the search logic every third input event
-        if (inputEventCounter === 0) {
-            searchData();
-        }
+    document.getElementById("userId").addEventListener("input", () => {
+      inputEventCounter++;
+      if (inputEventCounter === 3) {
+        inputEventCounter = 0;
+      }
+
+      // Run the search logic every third input event
+      if (inputEventCounter === 0) {
+        searchData();
+      }
     });
-</script>
-<body>
+  </script>
+
+  <body>
     <div class="card">
-        <input type="text" id="userId" name="userId" 
-            style="color: rgb(255, 255, 255);" />
-        <br>
-        <table style="background-color:#455089;color: white;">
-            <td>ชื่อ</td>
-            <td>รหัสพนักงาน</td>
-        </table>
-        <table id="additional-table" class="headertable2">
-            <td>ชื่อ</td>
-            <td>รหัสพนักงาน</td>
-        </table>
-        <br>
-        <table class="headertable">
-            <td>สถานะ</td>
-            <td>หมายเหตุ</td>
-            <td>วันที่</td>
-            <td>เวลา</td>
-        </table>
-        <table id="data-table"></table>
-        <!-- Add this div for pagination controls -->
-        <div id="pagination-controls"></div>
+      <input
+        type="text"
+        id="userId"
+        name="userId"
+        value="userID"
+        style="color: rgb(255, 255, 255)"
+      />
+      <br />
+      <table style="background-color: #455089; color: white">
+        <td>ชื่อ</td>
+        <td>รหัสพนักงาน</td>
+      </table>
+      <table id="additional-table" class="headertable2">
+        <td>ชื่อ</td>
+        <td>รหัสพนักงาน</td>
+      </table>
+
+      <br />
+      <table class="headertable">
+        <td>สถานะ</td>
+        <td>หมายเหตุ</td>
+        <td>วันที่</td>
+        <td>เวลา</td>
+      </table>
+      <table id="data-table"></table>
+
+      <!-- Add this div for pagination controls -->
+      <div id="pagination-controls"></div>
     </div>
     <script>
-        // Replace YOUR_API_KEY with your actual API key
-        const apiKey = 'AIzaSyAHc1bZMPXE9NehuqgmjuWPsXpGds9wUCE';
+      // Replace YOUR_API_KEY with your actual API key
+      const apiKey = "AIzaSyAHc1bZMPXE9NehuqgmjuWPsXpGds9wUCE";
 
-        // Replace YOUR_SPREADSHEET_ID with your actual Google Sheets ID
-        const spreadsheetId = '1gErfBELM6hSGTqx0xapkAfdhRjZ_BK7zhXMdRcLWm2w';
+      // Replace YOUR_SPREADSHEET_ID with your actual Google Sheets ID
+      const spreadsheetId = "1gErfBELM6hSGTqx0xapkAfdhRjZ_BK7zhXMdRcLWm2w";
 
-        // Google Sheets API endpoint
-        const apiUrl = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/DATA?key=${apiKey}`;
+      // Google Sheets API endpoint
+      const apiUrl = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/DATA?key=${apiKey}`;
 
-        // Call the fetchData function when the page loads
-        fetchData();
+      // Call the fetchData function when the page loads
+      fetchData();
     </script>
-</body>
-
+  </body>
 </html>
