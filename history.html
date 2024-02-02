@@ -73,9 +73,9 @@
     const itemsPerPage = 20; // Number of items to display per page
     let currentPage = 1;
 
-    // window.onload = function () {
-    //     initializeLiff(),getUserProfile();
-    // };
+    window.onload = function () {
+        initializeLiff(),getUserProfile();
+    };
 
     async function initializeLiff() {
       await liff.init({ liffId: "2002689552-GVpxdZ84" }); // Replace with your LIFF ID
