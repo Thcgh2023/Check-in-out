@@ -20,12 +20,17 @@
     table {
       border-collapse: collapse;
       width: 100%;
-      font-size: 1rem;
+      font-size: 0.8rem;
     }
-
-    td,
+    td {
+        border: 1px solid #e8effd;
+      text-align: left;
+      padding: 8px;
+      width: 25%;
+      border-radius: 10px; /* กำหนดค่า border-radius ที่ต้องการ */
+    }
+    
     th {
-      border: 1px solid #1F3D77;
       text-align: left;
       padding: 8px;
       width: 25%;
@@ -33,11 +38,11 @@
 
     tr:nth-child(even) {
       background-color: #ffffff;
-      font-size: 1rem;
+      font-size: 0.8rem;
     }
 
     label {
-      font-size: 1rem;
+      font-size: 0.8rem;
       font-weight: bold;
     }
 
@@ -68,6 +73,7 @@
     #pagination-controls button.active {
       background-color: #00C6B6;
       color: white;
+      border: 1px;
     }
   </style>
 
@@ -330,7 +336,6 @@
         <td>เวลา</td>
       </table>
       <table id="data-table"></table>
-
       <!-- Add this div for pagination controls -->
       <div id="pagination-controls"></div>
     </div>
