@@ -1,35 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ประวัติการบันทึก</title>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai&display=swap" rel="stylesheet">
-    <script src="https://static.line-scdn.net/liff/edge/2.1/sdk.js"></script>
-    <style>
-        body{
-            font-family: 'Noto Sans Thai', sans-serif;        }
-        .input-group{
-            justify-content: center;
-        }
-        input {
-      border: 1px solid white;
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ประวัติการบันทึก</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai&display=swap" rel="stylesheet">
+  <script src="https://static.line-scdn.net/liff/edge/2.1/sdk.js"></script>
+  <style>
+    body {
+      font-family: 'Noto Sans Thai', sans-serif;
+      background-color: #e8effd;
+      }
+
+    .input-group {
+      justify-content: center;
     }
+
+    input {
+      border: 1px solid #e8effd;
+      background: #e8effd;    }
 
     table {
       border-collapse: collapse;
       width: 100%;
       font-size: 0.8rem;
     }
+
     td {
-        border: 1px solid #e8effd;
+      border: 1px solid #e8effd;
       text-align: left;
       padding: 8px;
       width: 25%;
-      border-radius: 10px; /* กำหนดค่า border-radius ที่ต้องการ */
+      border-radius: 5px;
+      background-color: white;
+      /* กำหนดค่า border-radius ที่ต้องการ */
     }
-    
+
     th {
       text-align: left;
       padding: 8px;
@@ -309,48 +317,43 @@
     });
   </script>
 
-  <body>
-    <div class="card">
-      <input
-        type="text"
-        id="userId"
-        name="userId"
-        value="userID"
-        style="color: rgb(255, 255, 255)"
-      />
-      <br />
-      <table style="background-color: #455089; color: white">
-        <td>ชื่อ</td>
-        <td>รหัสพนักงาน</td>
-      </table>
-      <table id="additional-table" class="headertable2">
-        <td>ชื่อ</td>
-        <td>รหัสพนักงาน</td>
-      </table>
+<body>
+  <div class="card">
+    <input type="text" id="userId" name="userId" value="userID" style="color:#e8effd" />
+    <br />
+    <table >
+      <td style="background-color: #012263; color: white">ชื่อ</td>
+      <td style="background-color: #012263; color: white">รหัสพนักงาน</td>
+    </table>
+    <table id="additional-table" class="headertable2">
+      <td>ชื่อ</td>
+      <td>รหัสพนักงาน</td>
+    </table>
 
-      <br />
-      <table class="headertable">
-        <td>สถานะ</td>
-        <td>หมายเหตุ</td>
-        <td>วันที่</td>
-        <td>เวลา</td>
-      </table>
-      <table id="data-table"></table>
-      <!-- Add this div for pagination controls -->
-      <div id="pagination-controls"></div>
-    </div>
-    <script>
-      // Replace YOUR_API_KEY with your actual API key
-      const apiKey = "AIzaSyAHc1bZMPXE9NehuqgmjuWPsXpGds9wUCE";
+    <br />
+    <table class="headertable">
+      <td style="background-color: #00C6B6;font-weight: bold; color: #012263">สถานะ</td>
+      <td style="background-color: #00C6B6;font-weight: bold; color: #012263">หมายเหตุ</td>
+      <td style="background-color: #00C6B6;font-weight: bold; color: #012263">วันที่</td>
+      <td style="background-color: #00C6B6;font-weight: bold; color: #012263">เวลา</td>
+    </table>
+    <table id="data-table"></table>
+    <!-- Add this div for pagination controls -->
+    <div id="pagination-controls"></div>
+  </div>
+  <script>
+    // Replace YOUR_API_KEY with your actual API key
+    const apiKey = "AIzaSyAHc1bZMPXE9NehuqgmjuWPsXpGds9wUCE";
 
-      // Replace YOUR_SPREADSHEET_ID with your actual Google Sheets ID
-      const spreadsheetId = "1gErfBELM6hSGTqx0xapkAfdhRjZ_BK7zhXMdRcLWm2w";
+    // Replace YOUR_SPREADSHEET_ID with your actual Google Sheets ID
+    const spreadsheetId = "1gErfBELM6hSGTqx0xapkAfdhRjZ_BK7zhXMdRcLWm2w";
 
-      // Google Sheets API endpoint
-      const apiUrl = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/DATA?key=${apiKey}`;
+    // Google Sheets API endpoint
+    const apiUrl = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/DATA?key=${apiKey}`;
 
-      // Call the fetchData function when the page loads
-      fetchData();
-    </script>
-  </body>
+    // Call the fetchData function when the page loads
+    fetchData();
+  </script>
+</body>
+
 </html>
