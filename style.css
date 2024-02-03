@@ -162,7 +162,7 @@ display: flex;
     border: 1px solid #eaf0fe;
     position: absolute;
     z-index: -99;
-    background: #eaf0fe;
+    background: #ffffff;
 }
 .card {
     background: #fff;
