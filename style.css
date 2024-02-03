@@ -1,7 +1,7 @@
 
 body{
     font-family: 'Noto Sans Thai', sans-serif;
-    font-size:1.1rem;
+    font-size: 1rem;
     background: #eaf0fe;
 }
 .input-group{
@@ -81,7 +81,7 @@ body{
 }
 
 .switch-field label {
-    background-color: #eaf0fe;
+    background-color: #ffffff;
     color: #00c6b6;
     line-height: 2;
     text-align: center;
@@ -163,4 +163,8 @@ display: flex;
     position: absolute;
     z-index: -99;
     background: #eaf0fe;
+}
+.card {
+    background: #fff;
+    border: 1px solid #EAF0FE;
 }
