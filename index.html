@@ -44,6 +44,7 @@
 </head>
 <body>
     <div class="container p-4">
+        
         <div class="p-2"><span><b>สวัสดี</b></span>
             <input type="text" id="displayName" name="displayName" style="color:#1F3D77;border: none; width:65%; background-color: rgba(255, 255, 255, 0);">
         </div>
@@ -88,7 +89,7 @@
             <button class="btn btn-blue mt-3" onclick="nextStep()">ถัดไป</button>
 		</div>
             <table id="data-table" style="color: black; position: absolute;z-index: -9999;">
-            <input type="text" id="userId" name="userId" value="UserID" oninput="searchData()" style="background-color:#e7effe;color:#e7effe; border: 1px solid #e7effe; position: absolute; z-index: -99;"/>
+            <input class="textbox" type="text" id="userId" name="userId" value="UserID" oninput="searchData()"/>
             <input type="text" id="columnAData" name="columnAData" style="display: none;"/>    
             </table> 
         </div>
