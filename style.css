@@ -150,7 +150,7 @@ body{
  td {
     width: 100%;
     max-width: 100px;
-    color: #eaf0fe;
+    color: #ffffff;
 }
 
 .footerbar{
@@ -158,8 +158,8 @@ display: flex;
    flex-direction: row-reverse;
 }
 .textbox{
-    color: #eaf0fe;
-    border: 1px solid #eaf0fe;
+    color: #ffffff;
+    border: 1px solid #ffffff;
     position: absolute;
     z-index: -99;
     background: #ffffff;
