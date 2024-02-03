@@ -7,168 +7,13 @@
     <title>Check-in-out</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet" href="./style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://static.line-scdn.net/liff/edge/2.1/sdk.js"></script>
-    <style>
-        body{
-            font-family: 'Noto Sans Thai', sans-serif;        }
-        .input-group{
-            justify-content: center;
-        }
-        #time{
-            font-size: 2rem;
-        }
-        #date{
-            font-size: 1rem;
-        }
-        .banner{
-            text-align: right;
-            color: #1F3D77;
-            padding: 20px;
-            background: #ffffff;
-            font-weight: bold;
-            margin-top: 10px;
-            border: 1px solid #1F3D77;
-            border-radius: 5px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .btn-blue{
-            background-color: #1F3D77;
-            color: white;
-            border: none;
-            padding: 15px;
-            width: 120px;
-        }
-        .btn-green{
-            background-color: #179824;
-            color: white;
-            padding: 10px;
-            width: 140px;
-            border-radius: 50px;
-        }
-        .btn-yellow{
-            background-color: #ffc107;
-            color: rgb(0, 0, 0);
-            padding: 10px;
-            width: 140px;
-            border-radius: 50px;
-        }
-        .btn-red{
-            background-color: #C70B0B;
-            color: white;
-            padding: 15px;
-            width: 120px;
-        }
-        .btn-gray{
-            background-color: #b3b3b3;
-            color: white;
-            padding: 15px;
-            width: 120px;
-        }
-        .btn-map{
-            background-color: #1F3D77;
-            color: white;
-            padding: 15px;
-        }
-
-        .switch-field {
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        .switch-field input {
-            position: absolute !important;
-            clip: rect(0, 0, 0, 0);
-            height: 1px;
-            width: 1px;
-            border: 0;
-            overflow: hidden;
-        }
-
-        .switch-field label {
-            background-color: #EAF0FE;
-            color: #000;
-            line-height: 2;
-            text-align: center;
-            padding: 5px 15px;
-            font-weight: bold;
-            transition: all 0.1s ease-in-out;
-            border: 1px solid #EAF0FE;
-            border-radius:5px;
-
-        }
-        .switch-field label:hover {
-            cursor: pointer;
-        }
-
-        .switch-field input:checked+label {
-            background-color: #1F3D77;
-            color: rgb(255, 255, 255);
-            box-shadow: none;
-            font-weight: bold;
-            border: 1px solid #EAF0FE;
-        }
-        .switch-field label:first-of-type {
-            border-radius:5px;}
-
-        .switch-field label:last-of-type {
-            border-radius:5px;
-        }
-
-        .form-control {
-            padding: 0.5rem 0.75rem !important;
-            border: 1px solid #1F3D77;
-        }
-        
-        .input-group{
-            display: flex;
-            justify-content: space-between;
-        }
-      
-        .input-icons span {
-            position: absolute;
-            padding: 10px 15px;
-            color: #1F3D77;
-        }
-        .input-icons {
-            width: 100%;
-            margin-bottom: 10px;
-        }
-        .input-field {
-            width: 100%;
-            text-align: left;
-            border: 1px solid #EAF0FE;
-            border-radius: 5px;
-            padding:10px 50px ;
-            
-        }
-        .card{
-            border: 1px solid #EAF0FE;
-        }
-        #locationInfo{
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-        }
-        .img-time{
-            width: 100%;
-        }
-		 td {
-            width: 100%;
-            max-width: 100px;
-            color:white;
-    }
-	.footerbar{
- 	   display: flex;
-	   flex-direction: row-reverse;
-	}
-</style>
+    
 <script>
     window.onload = function () {
         initializeLiff(),getUserProfile();
@@ -243,7 +88,7 @@
             <button class="btn btn-blue mt-3" onclick="nextStep()">ถัดไป</button>
 		</div>
             <table id="data-table" style="color: black; position: absolute;z-index: -9999;">
-            <input type="text" id="userId" name="userId" oninput="searchData()" style="color:#fff; border: 1px solid #fff; position: absolute; z-index: -99;"/>
+            <input type="text" id="userId" name="userId" value="UserID" oninput="searchData()" style="color:#e7effe; border: 1px solid #e7effe; position: absolute; z-index: -99;"/>
             <input type="text" id="columnAData" name="columnAData" style="display: none;"/>    
             </table> 
         </div>
