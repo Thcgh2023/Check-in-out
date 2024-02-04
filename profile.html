@@ -124,12 +124,13 @@
      </div>
     <script>
         // Replace YOUR_API_KEY with your actual API key
-        const apimapKey = 'AIzaSyB89WSrfZKA_uP9UslXs8Bo7y90PYzbpD4';
-        // Replace YOUR_SPREADSHEET_ID with your actual Google Sheets ID
-        const spreadsheet2Id = '1DkCnmGVYMjf66tarSX1EA5zm1mDL_0ACYNx2AAa5J6g';
-        // Google Sheets API endpoint
-        const apiUrl = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheet2Id}/values/MEMBER?key=${apimapKey}`;
-        // Function to fetch data from Google Sheets API
+    const apimapKey = 'AIzaSyAHc1bZMPXE9NehuqgmjuWPsXpGds9wUCE';
+
+    // Replace YOUR_SPREADSHEET_ID with your actual Google Sheets ID
+    const spreadsheet2Id = '1gErfBELM6hSGTqx0xapkAfdhRjZ_BK7zhXMdRcLWm2w';
+
+    // Google Sheets API endpoint
+    const apiUrl = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheet2Id}/values/MEMBER?key=${apimapKey}`;
         async function fetchData() {
             try {
                 const response = await fetch(apiUrl);
