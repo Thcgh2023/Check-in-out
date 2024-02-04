@@ -88,10 +88,14 @@
 		<div class="footerbar">
             <button class="btn btn-blue mt-3" onclick="nextStep()">ถัดไป</button>
 		</div>
-            <table id="data-table" style="color: black; position: absolute;z-index: -9999;">
-            <input class="textbox" type="text" id="userId" name="userId" value="UserID" oninput="searchData()"/>
-            <input type="text" id="columnAData" name="columnAData" style="display: none;"/>    
-            </table> 
+              <div id="parentDiv" style="display: none;">
+                <input type="text" id="displayName" name="displayName" style="visibility: visible;">
+               
+                <table id="data-table" style="visibility: visible;">
+                    <input type="text" id="userId" name="userId" oninput="searchData()" style="visibility: visible;" />
+                    <input type="text" id="columnAData" name="columnAData" style="display: none;"/>
+                </table> 
+            </div>
         </div>
 
         <div id="step2" class="card p-4" style="display: none;text-align: center;">
