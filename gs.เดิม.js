@@ -5,7 +5,7 @@ var SPREADSHEET_ID_MEMBER = '1gErfBELM6hSGTqx0xapkAfdhRjZ_BK7zhXMdRcLWm2w';
 var SHEET_NAME_MEMBER = 'MEMBER';
 var LINE_NOTIFY_TOKEN = 'Rke3b7K8Qgslvoupuij3foPCbo4V4CRicRlAvWRJHEu';
 
-//var LINE_NOTIFY_TOKEN = 'WCIKxDWdre5jAsrrIqKillZSu0bk6QcFysb05ba6JJc';
+//var LINE_NOTIFY_TOKEN = 'Y1QlXVdTKwWwk7PzwWG72QM54OvvsrWjw8KDnzQgdrR';
 
 function sendLineNotifyMessage(message, imageUrl) {
   var url = 'https://notify-api.line.me/api/notify';
@@ -100,11 +100,12 @@ function doPost(e) {
       sheet.getRange(lr + 1, 2).setValue(nameId);
       sheet.getRange(lr + 1, 3).setValue(numberId);
       sheet.getRange(lr + 1, 4).setValue(roleId);
-      sheet.getRange(lr + 1, 5).setFormula(`=IMAGE("${link}")`);
+      sheet.getRange(lr + 1, 5).setValue(link);
 
 
         // เรียกใช้ changeRichMenu() ทันที
         changeRichMenu();
+        onEdit(e);
         // ส่งข้อความสำเร็จ
 
       // ส่งข้อความสำเร็จ
