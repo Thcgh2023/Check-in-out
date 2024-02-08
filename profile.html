@@ -8,9 +8,9 @@
     <script src="https://static.line-scdn.net/liff/edge/2.1/sdk.js"></script>
 </head>
 <script>
-    //  window.onload = function () {
-    //      initializeLiff(), getUserProfile();
-    //  };
+     window.onload = function () {
+         initializeLiff(), getUserProfile();
+     };
     async function initializeLiff() {
         await liff.init({ liffId: '2002689552-rdEa9vdO' }); // Replace with your LIFF ID
         if (liff.isLoggedIn()) {
