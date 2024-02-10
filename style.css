@@ -15,12 +15,12 @@ body{
 }
 .banner{
     text-align: right;
-    color: #1F3D77;
+    color: #ffffff;
     padding: 20px;
-    background: #ffffff;
     font-weight: bold;
+    background: rgb(12,32,70);
+    background: linear-gradient(334deg, rgb(31 61 119) 0%, rgb(36 170 223) 100%);
     margin-top: 10px;
-    border: 1px solid #1F3D77;
     border-radius: 5px;
     display: flex;
     justify-content: space-between;
@@ -146,6 +146,7 @@ body{
 }
 .img-time{
     width: 100%;
+    border-radius:5px;
 }
  td {
     width: 100%;
