@@ -34,7 +34,12 @@
 
     <label for="endDate" class="mr-2">End Date:</label>
     <input type="date" id="endDate" class="mb-2 p-2 rounded border border-gray-300">
-
+    <!-- Add these checkboxes for each code in Column A -->
+    <input type="checkbox" name="codeFilter" value="KQP"checked> KQP
+    <input type="checkbox" name="codeFilter" value="THH"checked> THH
+    <input type="checkbox" name="codeFilter" value="ADL"checked> ADL
+    <input type="checkbox" name="codeFilter" value="KHH"checked> KHH
+    
     <button onclick="filterByDateRange()" class="bg-blue-500 text-white px-4 py-2 rounded mb-2">Filter</button>
     <button onclick="resetFilters()" class="bg-gray-500 text-white px-4 py-2 rounded mb-2">Reset Filters</button>
     <button onclick="exportFilteredData()" class="bg-green-500 text-white px-4 py-2 rounded mb-2">Export to TXT</button>
@@ -85,26 +90,71 @@
         .catch(error => console.error('Error fetching data:', error));
 
     function filterByDateRange() {
-        const startDate = document.getElementById('startDate').value;
-        const endDate = document.getElementById('endDate').value;
-        const table = document.getElementById('tableBody');
-        const rows = table.getElementsByTagName('tr');
+    const startDate = document.getElementById('startDate').value;
+    const endDate = document.getElementById('endDate').value;
+    const selectedCodes = getSelectedCodes(); // Get selected values for Column A
+    const table = document.getElementById('tableBody');
+    const rows = table.getElementsByTagName('tr');
 
-        for (let i = 0; i < rows.length; i++) {
-            const dateColumn = rows[i].getElementsByTagName('td')[2]; // Assuming Column 3 contains the date
+    for (let i = 0; i < rows.length; i++) {
+        const dateColumn = rows[i].getElementsByTagName('td')[2]; // Assuming Column 3 contains the date
+        const codeColumn = rows[i].getElementsByTagName('td')[0]; // Assuming Column 1 contains the code
 
-            if (dateColumn) {
-                const txtValue = dateColumn.textContent || dateColumn.innerText;
-                const formattedDate = formatDate(txtValue);
+        if (dateColumn && codeColumn) {
+            const txtValue = dateColumn.textContent || dateColumn.innerText;
+            const formattedDate = formatDate(txtValue);
+            const codeValue = codeColumn.textContent || codeColumn.innerText;
 
-                if (formattedDate >= startDate && formattedDate <= endDate) {
-                    rows[i].style.display = '';
-                } else {
-                    rows[i].style.display = 'none';
-                }
+            const isDateInRange = formattedDate >= startDate && formattedDate <= endDate;
+            const isCodeMatched = selectedCodes.some(selectedCode => codeValue.includes(selectedCode));
+
+            if (isDateInRange && isCodeMatched) {
+                rows[i].style.display = '';
+            } else {
+                rows[i].style.display = 'none';
             }
         }
     }
+}
+
+function getSelectedCodes() {
+    // This function retrieves the selected values from the filter checkboxes for Column A
+    const checkboxes = document.querySelectorAll('input[name="codeFilter"]:checked');
+    return Array.from(checkboxes).map(checkbox => checkbox.value);
+}
+
+
+function exportFilteredData() {
+    const table = document.getElementById('tableBody');
+    const visibleRows = Array.from(table.getElementsByTagName('tr')).filter(row => row.style.display !== 'none');
+    const startDate = document.getElementById('startDate').value;
+    const endDate = document.getElementById('endDate').value;
+
+    // Generate filename with start and end dates
+    const filename = `InputData_${startDate}_${endDate}.txt`;
+
+    let txtContent = 'รหัสที่เครื่อง\tวัน/เวลา\n';
+
+    for (let i = 0; i < visibleRows.length; i++) {
+        const cells = visibleRows[i].getElementsByTagName('td');
+
+        // Include only columns A and B
+        const columnA = cells[0].textContent || cells[0].innerText;
+        const columnB = cells[1].textContent || cells[1].innerText;
+
+        txtContent += `${columnA}\t${columnB}\n`; // Tab-separated values
+    }
+
+    // Create a Blob containing the text content
+    const blob = new Blob([txtContent], { type: 'text/plain' });
+
+    // Create a link element and trigger a download
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = filename;
+    link.click();
+}
+
 
     function resetFilters() {
         const table = document.getElementById('tableBody');
@@ -121,36 +171,6 @@
         return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
     }
 
-    function exportFilteredData() {
-        const table = document.getElementById('tableBody');
-        const rows = table.getElementsByTagName('tr');
-        const startDate = document.getElementById('startDate').value;
-        const endDate = document.getElementById('endDate').value;
-
-        // Generate filename with start and end dates
-        const filename = `InputData_${startDate}_${endDate}.txt`;
-
-        let txtContent = 'รหัสที่เครื่อง\tวัน/เวลา\n';
-
-        for (let i = 0; i < rows.length; i++) {
-            const cells = rows[i].getElementsByTagName('td');
-
-            // Include only columns A and B
-            const columnA = cells[0].textContent || cells[0].innerText;
-            const columnB = cells[1].textContent || cells[1].innerText;
-
-            txtContent += `${columnA}\t${columnB}\n`; // Tab-separated values
-        }
-
-        // Create a Blob containing the text content
-        const blob = new Blob([txtContent], { type: 'text/plain' });
-
-        // Create a link element and trigger a download
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = filename;
-        link.click();
-    }
 </script>
 
 </body>
