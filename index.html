@@ -352,18 +352,26 @@
         }
     
         async function sendFlexMessage() {
+	let jobColor = '';
+	if (jobInput.value === 'เข้างาน') {
+		jobColor = '#0D9608FF'; // Green color
+	} else if (jobInput.value === 'ออกงาน') {
+		jobColor = '#EF2F14FF'; // Red color
+	} else {
+		jobColor = '#000000FF'; // Default color if neither "เข้างาน" nor "ออกงาน"
+	}
       const flexMessage = {
-           type: 'flex',
-				altText: 'บันทึกเวลา',
-				contents: {
-					type: 'bubble',
-					direction: 'ltr',
-					body: {
-						type: 'box',
-						layout: 'vertical',
-						spacing: 'md',
-						contents: [
-							{
+	type: 'flex',
+	altText: 'บันทึกเวลา',
+	contents: {
+		type: 'bubble',
+		direction: 'ltr',
+		body: {
+			type: 'box',
+			layout: 'vertical',
+			spacing: 'md',
+			contents: [
+				{
                           type: 'box',
                           layout: 'horizontal',
                           contents: [
@@ -378,12 +386,12 @@
                               },
                               {
                                   type: 'text',
-                                  text: ` ${jobInput.value}`,
-                                  weight: 'bold',
-                                  size: 'md',
-                                  color: '#0D9608FF',
-                                  align: 'end',
-                                  contents: [],
+				  text: ` ${jobInput.value}`,
+				  weight: 'bold',
+				  size: 'md',
+			  	  color: jobColor, // Dynamic color
+				  align: 'end',
+				  contents: [],
                               },
                           ],
                       },
@@ -510,9 +518,9 @@
                               },
                               {
                                   type: 'text',
-                                  text:  `${fullAddressInput.value}`,
-                                  wrap: true,
-                                  contents: [],
+				  text: fullAddressInput.value ? `${fullAddressInput.value}` : 'ข้อมูลไม่พร้อมแสดง บันทึกพิกัดของคุณเรียบร้อย',
+				  wrap: true,
+				  contents: [],
                               },
                           ],
                       },
