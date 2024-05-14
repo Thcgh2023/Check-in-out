@@ -32,100 +32,67 @@
     }
 </script>
 
-<body class="bg-blue-900">
+<body class="bg-gray-100">
     <div class="mx-auto right-0 mt-5 w-full p-10">
-
-        <div
-            class="py-8 px-8 max-w-sm mx-auto bg-white rounded-xl shadow-lg space-y-2 sm:py-4 sm:flex sm:items-center sm:space-y-0 sm:space-x-6">
-            <img class="h-32 w-32 rounded-full border-4 border-white dark:border-gray-800 mx-auto my-4" id="columnGData"
-            src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
-            alt="" style="">
-            <div class="text-center space-y-2 sm:text-left">
-                <div class="space-y-2">
-                    <input type="text" class="input-field text-center text-md bg-white bg-opacity-0  text-gray-800 "
-                        id="columnBData" placeholder="ชื่อ - สกุล" name="columnBData" required>
-                        <input type="text"
-                        class="input-field text-md text-center bg-white bg-opacity-0  text-gray-800"
-                        id="columnDData" placeholder="ตำแหน่ง" name="columnDData" required>
-                </div>
-               
-                    <input type="text" class="input-field text-md text-center bg-white bg-opacity-0 p-2 px-4 py-1 text-sm text-purple-600 font-semibold rounded-full border border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2"
-                        id="roleInput" placeholder="รหัส พนักงาน" name="roleInput" required>
-            </div>
-        </div>
-
-        <div class="mx-auto bg-white max-w-sm rounded-lg overflow-hidden shadow-sm">
-
-
-
-            <!-- <div class="divide-y divide-slate-700">
-                <Link href="/account/campaigns">
-                <a class="px-4 py-6 hover:bg-gray-100 flex">
-                    <div class="text-green-600">
-                        <svg fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"
-                            strokeWidth="1" viewBox="0 0 24 24" class="w-5 h-5">
-                            <path
-                                d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
-                        </svg>
-                    </div>
-                    <div class="pl-3">
-                        <p class="text-sm font-medium text-gray-800 leading-none">
-                            ลาพักร้อน
-                        </p>
-                        <p class="text-xs text-gray-500">N/A วัน</p>
-                    </div>
-                </a>
-                </Link>
-                <Link href="/account/campaigns">
-                <a class="px-4 py-6 hover:bg-gray-100 flex">
-                    <div class="text-green-600">
-                        <svg fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"
-                            strokeWidth="1" viewBox="0 0 24 24" class="w-5 h-5">
-                            <path
-                                d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
-                        </svg>
-                    </div>
-                    <div class="pl-3">
-                        <p class="text-sm font-medium text-gray-800 leading-none">
-                            ลากิจ
-                        </p>
-                        <p class="text-xs text-gray-500">N/A วัน</p>
-                    </div>
-                </a>
-                </Link>
-                <div class="">
-                    <Link href="/account/campaigns">
-                    <a class="px-4 py-6 hover:bg-gray-100 flex">
-                        <div class="text-green-600">
-                            <svg fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"
-                                strokeWidth="1" viewBox="0 0 24 24" class="w-5 h-5">
-                                <path
-                                    d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
-                            </svg>
+        <div class=" flex justify-center items-center">
+            <div class="space-y-16">
+                <div
+                    class="w-96 h-56 m-auto bg-gradient-to-bl from-gray-900 to-gray-700 rounded-xl relative text-white shadow-2xl transition-transform transform hover:scale-110">
+                    <div class="w-full px-8 absolute bottom-4">
+                        <div class="flex justify-between">
+                            <div class="">
+                                <h1 class="text-blue-300">PROFILE USER</h1>
+                                <p class="font-medium tracking-more-wider">
+                                    <input type="text"
+                                        class="input-field  text-md bg-white text-white bg-opacity-0 py-1"
+                                        id="columnBData" placeholder="name" name="columnBData" required>
+                                </p>
+                            </div>
+                            <img class="h-16 w-16 rounded-lg" id="columnGData"
+                                src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" />
                         </div>
-                        <div class="pl-3">
-                            <p class="text-sm font-medium text-gray-800 leading-none">
-                                ลาป่วย
+                        <div class="pt-1">
+                            <input type="text" class="input-field text-md bg-white text-white bg-opacity-0 py-1"
+                                id="roleInput" placeholder="keycard" name="roleInput" required>
+                            <p class="font-medium tracking-more-wider">
+                                <input type="text" class="input-field text-md  bg-white text-white bg-opacity-0 py-1"
+                                    id="columnDData" placeholder="position" name="columnDData" required>
                             </p>
-                            <p class="text-xs text-gray-500">N/A วัน</p>
                         </div>
-                    </a>
-                    </Link>
+                        <div class="pt-6 pr-6">
+                            <div class="flex justify-between">
+                                <div class="">
+                                    <h1 class="font-light text-xs">ลาพักร้อน</h1>
+                                    <p class="font-medium tracking-wider text-sm">NA/NA</p>
+                                </div>
+                                <div class="">
+                                    <h1 class="font-light text-xs text-xs">ลากิจ</h1>
+                                    <p class="font-medium tracking-wider text-sm">NA/NA</p>
+                                </div>
+                                <div class="">
+                                    <h1 class="font-light text-xs">ลาป่วย</h1>
+                                    <p class="font-bold tracking-more-wider text-sm">NA/NA</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            </div>
-        </div> -->
-            <div id="parentDiv" style="display: none;">
-                <input type="text" id="displayName" name="displayName" style="visibility: visible;">
-                <table id="data-table" style="visibility: visible;">
-                    <input type="text" id="userId" name="userId" oninput="searchData()" style="visibility: visible;" />
-                    <input type="text" id="columnAData" name="columnAData" style="display: none;" />
-                </table>
-            </div>
-            <table id="data-table">
-            </table>
         </div>
-        <script>
+    </div>
+
+
+    <div id="parentDiv" style="display: none;">
+        <input type="text" id="displayName" name="displayName" style="visibility: visible;">
+        <table id="data-table" style="visibility: visible;">
+            <input type="text" id="userId" name="userId" oninput="searchData()" style="visibility: visible;" />
+            <input type="text" id="columnAData" name="columnAData" style="display: none;" />
+        </table>
+    </div>
+    <table id="data-table">
+    </table>
+    </div>
+    <script>
             // Replace YOUR_API_KEY with your actual API key
             const apimapKey = 'AIzaSyAHc1bZMPXE9NehuqgmjuWPsXpGds9wUCE';
 
@@ -135,78 +102,73 @@
             // Google Sheets API endpoint
             const apiUrl = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheet2Id}/values/MEMBER?key=${apimapKey}`;
             // Function to fetch data from Google Sheets API
-            async function fetchData() {
-                try {
-                    const response = await fetch(apiUrl);
-                    const data = await response.json();
-                    // Extract values from the response
-                    const values = data.values;
-                    // Build the table HTML
-                    const table = document.getElementById('data-table');
-                    table.innerHTML = ''; // Clear previous data
-                    values.forEach(row => {
-                        const tr = document.createElement('tr');
-                        row.forEach(cell => {
-                            const td = document.createElement('td');
-                            td.textContent = cell;
-                            tr.appendChild(td);
-                        });
-                        table.appendChild(tr);
-                    });
-                } catch (error) {
-                    console.error('Error fetching data:', error);
-                }
-            }
-            // Call the fetchData function when the page loads
-            fetchData();
-            function searchData() {
-                const searchInput = document.getElementById('userId');
-                const filter = searchInput.value.toUpperCase();
+        async function fetchData() {
+            try {
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+                // Extract values from the response
+                const values = data.values;
+                // Build the table HTML
                 const table = document.getElementById('data-table');
-                const rows = table.getElementsByTagName('tr');
-                let tableHidden = true; // Assume the table is initially hidden
-                for (let i = 0; i < rows.length; i++) {
-                    const cells = rows[i].getElementsByTagName('td');
-                    let shouldDisplay = false;
-                    for (let j = 0; j < cells.length; j++) {
-                        const cellText = cells[j].textContent || cells[j].innerText;
-                        if (cellText.toUpperCase().indexOf(filter) > -1) {
-                            shouldDisplay = true;
-                            // Display data related to columns in the corresponding input fields
-                            const columnADataInput = document.getElementById('columnAData');
-                            const columnAData = rows[i].getElementsByTagName('td')[0].textContent || rows[i].getElementsByTagName('td')[0].innerText;
-                            columnADataInput.value = columnAData;
-                            const columnBDataInput = document.getElementById('columnBData');
-                            const columnBData = rows[i].getElementsByTagName('td')[1].textContent || rows[i].getElementsByTagName('td')[1].innerText;
-                            columnBDataInput.value = columnBData;
-                            const roleInputInput = document.getElementById('roleInput');
-                            const roleInput = rows[i].getElementsByTagName('td')[2].textContent || rows[i].getElementsByTagName('td')[1].innerText;
-                            roleInputInput.value = roleInput;
-                            const columnDDataInput = document.getElementById('columnDData');
-                            const columnDData = rows[i].getElementsByTagName('td')[3].textContent || rows[i].getElementsByTagName('td')[1].innerText;
-                            columnDDataInput.value = columnDData;
-
-                            const columnGDataInput = document.getElementById('columnGData');
-                            const columnGData = rows[i].getElementsByTagName('td')[4].textContent || rows[i].getElementsByTagName('td')[1].innerText;
-                            columnGDataInput.src = columnGData;  // Assuming columnGData contains the image URL
-                            columnGDataInput.alt = "image";
-
-
-                            break;
-                        }
-                    }
-                    rows[i].style.display = shouldDisplay ? '' : 'none';
-                    // If at least one row matches, set the tableHidden flag to false
-                    if (shouldDisplay) {
-                        tableHidden = false;
+                table.innerHTML = ''; // Clear previous data
+                values.forEach(row => {
+                    const tr = document.createElement('tr');
+                    row.forEach(cell => {
+                        const td = document.createElement('td');
+                        td.textContent = cell;
+                        tr.appendChild(td);
+                    });
+                    table.appendChild(tr);
+                });
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        }
+        // Call the fetchData function when the page loads
+        fetchData();
+        function searchData() {
+            const searchInput = document.getElementById('userId');
+            const filter = searchInput.value.toUpperCase();
+            const table = document.getElementById('data-table');
+            const rows = table.getElementsByTagName('tr');
+            let tableHidden = true; // Assume the table is initially hidden
+            for (let i = 0; i < rows.length; i++) {
+                const cells = rows[i].getElementsByTagName('td');
+                let shouldDisplay = false;
+                for (let j = 0; j < cells.length; j++) {
+                    const cellText = cells[j].textContent || cells[j].innerText;
+                    if (cellText.toUpperCase().indexOf(filter) > -1) {
+                        shouldDisplay = true;
+                        // Display data related to columns in the corresponding input fields
+                        const columnADataInput = document.getElementById('columnAData');
+                        const columnAData = rows[i].getElementsByTagName('td')[0].textContent || rows[i].getElementsByTagName('td')[0].innerText;
+                        columnADataInput.value = columnAData;
+                        const columnBDataInput = document.getElementById('columnBData');
+                        const columnBData = rows[i].getElementsByTagName('td')[1].textContent || rows[i].getElementsByTagName('td')[1].innerText;
+                        columnBDataInput.value = columnBData;
+                        const roleInputInput = document.getElementById('roleInput');
+                        const roleInput = rows[i].getElementsByTagName('td')[2].textContent || rows[i].getElementsByTagName('td')[1].innerText;
+                        roleInputInput.value = roleInput;
+                        const columnDDataInput = document.getElementById('columnDData');
+                        const columnDData = rows[i].getElementsByTagName('td')[3].textContent || rows[i].getElementsByTagName('td')[1].innerText;
+                        columnDDataInput.value = columnDData;
+                        const columnGDataInput = document.getElementById('columnGData');
+                        const columnGData = rows[i].getElementsByTagName('td')[4].textContent || rows[i].getElementsByTagName('td')[1].innerText;
+                        columnGDataInput.src = columnGData;  // Assuming columnGData contains the image URL
+                        columnGDataInput.alt = "image";
+                        break;
                     }
                 }
-                // Show or hide the table based on the tableHidden flag
-                table.style.display = tableHidden ? 'none' : '';
+                rows[i].style.display = shouldDisplay ? '' : 'none';
+                // If at least one row matches, set the tableHidden flag to false
+                if (shouldDisplay) {
+                    tableHidden = false;
+                }
             }
-
-
-        </script>
+            // Show or hide the table based on the tableHidden flag
+            table.style.display = tableHidden ? 'none' : '';
+        }
+    </script>
 </body>
 
 </html>
