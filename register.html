@@ -1,391 +1,402 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ลงทะเบียน</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ลงทะเบียน</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 </head>
+
 <body>
-<div class="bg-gray-100 h-screen">
+  <div class="bg-gray-100  h-screen">
     <div class="max-w-md mx-auto px-4 py-4">
-        <form>
-            <div class="bg-white relative p-10 shadow rounded-lg w-6/6 md:w-5/6 lg:w-4/6 xl:w-3/6 mx-auto">    
-                <!-- ส่วนแสดงภาพโปรไฟล์และอัพโหลดรูป -->
-                <div class="mb-5 text-center">
-                    <div class="mx-auto w-32 h-32 mb-2 border rounded-md relative bg-gray-100 mb-4 shadow-inset">
-                        <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" alt="Default Image" id="preview" class="object-cover w-full ">
-                    </div>
-                    <label for="file" class="cursor-pointer inline-flex justify-between items-center focus:outline-none border py-2 px-4 rounded-lg shadow-sm text-left text-gray-600 bg-white hover:bg-gray-100 font-medium">
-                        <img src="https://img.icons8.com/?size=100&id=748&format=png&color=000000" class="w-6 h-6 mx-1">
-                        อัพโหลดรูป
-                        <input type="file" id="file" name="file" accept="image/*" class="hidden">
-                    </label>
-                    <div class="mx-auto w-48 text-gray-500 text-xs text-center mt-1">คลิกเพื่ออัพโหลดรูปของคุณ</div>
-                </div>
-              
-                <!-- ส่วนกรอกข้อมูล -->
-                <div class="flex items-center space-x-2 mb-4">
-                    <span class="border border-gray-300 rounded-md p-2">
-                        <img src="https://img.icons8.com/?size=100&id=82753&format=png&color=000000" class="w-6 h-6">
-                    </span>
-                    <input type="text" class="input-field w-full border bg-gray-200 to-gray-100 border-gray-300 p-2 text-gray-500 rounded-md" id="userlineId" placeholder="lineId" name="userlineId" readonly>
-                </div>
-                <div class="flex items-center space-x-2  mb-4">
-                    <span class="border border-gray-300 rounded-md p-2">
-                        <img src="https://img.icons8.com/?size=100&id=xXjlE05o3dcg&format=png&color=000000" class="w-6 h-6">
-                    </span>
-                    <input type="text" class="input-field w-full border border-gray-300 p-2 text-md rounded-md " id="nameId" placeholder="ชื่อ-สกุล" name="nameId" required>
-                </div>
-                <div class="flex items-center space-x-2 mb-4">
-                    <span class="border border-gray-300 rounded-md p-2">
-                        <img src="https://img.icons8.com/?size=100&id=XIlJiJgPkQMj&format=png&color=000000" class="w-6 h-6">
-                    </span>
-                    <input type="text" class="input-field w-full border border-gray-300 p-2 text-md rounded-md" id="numberId" placeholder="เลขรหัสพนักงาน" name="numberId" required>
-                </div>
-                <div class="flex items-center space-x-2 mb-6">
-                    <span class="border border-gray-300 rounded-md p-2">
-                        <img src="https://img.icons8.com/?size=100&id=39594&format=png&color=000000" class="w-6 h-6">
-                    </span>
-                    <input type="text" class="input-field w-full border border-gray-300 p-2 text-md rounded-md" id="roleId" placeholder="ตำแหน่ง" name="roleId" required>
-                </div>
-                <button type="button" id="submitBtn" class="bg-blue-700  text-center w-full text-white py-4 px-4 rounded-md hover:bg-blue-500">บันทึกข้อมูล</button>
+      <form>
+        <div class="bg-white relative p-10 shadow rounded-lg w-full mx-auto">
+          <!-- ส่วนแสดงภาพโปรไฟล์และอัพโหลดรูป -->
+          <div class="mb-5 text-center">
+            <div class="mx-auto w-32 h-32 mb-2 border rounded-md relative bg-gray-100 mb-4 shadow-inset">
+              <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+                alt="Default Image" id="preview" class="object-cover w-full ">
             </div>
-        </form>
+            <label for="file"
+              class="cursor-pointer inline-flex justify-between items-center focus:outline-none border py-2 px-4 rounded-lg shadow-sm text-left text-gray-600 bg-white hover:bg-gray-100 font-medium">
+              <img src="https://img.icons8.com/?size=100&id=748&format=png&color=000000" class="w-6 h-6 mx-1">
+              อัพโหลดรูป
+              <input type="file" id="file" name="file" accept="image/*" class="hidden">
+            </label>
+            <div class="mx-auto w-48 text-gray-500 text-xs text-center mt-1">คลิกเพื่ออัพโหลดรูปของคุณ</div>
+          </div>
+
+          <!-- ส่วนกรอกข้อมูล -->
+          <div class="flex items-center space-x-2 mb-4">
+            <span class="border border-gray-300 rounded-md p-2">
+              <img src="https://img.icons8.com/?size=100&id=82753&format=png&color=000000" class="w-6 h-6">
+            </span>
+            <input type="text"
+              class="input-field w-full border bg-gray-200 to-gray-100 border-gray-300 p-2 text-gray-500 rounded-md"
+              id="userlineId" placeholder="lineId" name="userlineId" readonly>
+          </div>
+          <div class="flex items-center space-x-2  mb-4">
+            <span class="border border-gray-300 rounded-md p-2">
+              <img src="https://img.icons8.com/?size=100&id=xXjlE05o3dcg&format=png&color=000000" class="w-6 h-6">
+            </span>
+            <input type="text" class="input-field w-full border border-gray-300 p-2 text-md rounded-md " id="nameId"
+              placeholder="ชื่อ-สกุล" name="nameId" required>
+          </div>
+          <div class="flex items-center space-x-2 mb-4">
+            <span class="border border-gray-300 rounded-md p-2">
+              <img src="https://img.icons8.com/?size=100&id=XIlJiJgPkQMj&format=png&color=000000" class="w-6 h-6">
+            </span>
+            <input type="text" class="input-field w-full border border-gray-300 p-2 text-md rounded-md" id="numberId"
+              placeholder="เลขรหัสพนักงาน" name="numberId" required>
+          </div>
+          <div class="flex items-center space-x-2 mb-6">
+            <span class="border border-gray-300 rounded-md p-2">
+              <img src="https://img.icons8.com/?size=100&id=39594&format=png&color=000000" class="w-6 h-6">
+            </span>
+            <input type="text" class="input-field w-full border border-gray-300 p-2 text-md rounded-md" id="roleId"
+              placeholder="ตำแหน่ง" name="roleId" required>
+          </div>
+          <button type="button" id="submitBtn"
+            class="bg-blue-700  text-center w-full text-white py-4 px-4 rounded-md hover:bg-blue-500">บันทึกข้อมูล</button>
+        </div>
+      </form>
     </div>
-</div>
-<script src="https://static.line-scdn.net/liff/edge/2.1/sdk.js"></script>
-<script>   
-window.onload = function () {
-    initializeLiff();
-};
+  </div>
+  <script src="https://static.line-scdn.net/liff/edge/2.1/sdk.js"></script>
+  <script>
+    window.onload = function () {
+      //  initializeLiff();
+    };
 
-// ฟังก์ชันสำหรับการเริ่มต้น LIFF
-async function initializeLiff() {
-    await liff.init({ liffId: '2002689552-4R7VpE2W' });
+    // ฟังก์ชันสำหรับการเริ่มต้น LIFF
+    async function initializeLiff() {
+      await liff.init({ liffId: '2002689552-4R7VpE2W' });
 
-    if (liff.isLoggedIn()) {
+      if (liff.isLoggedIn()) {
         getUserProfile();
-    } else {
+      } else {
         liff.login();
+      }
     }
-}
 
-// ฟังก์ชันสำหรับดึงข้อมูลโปรไฟล์ผู้ใช้จาก LIFF
-async function getUserProfile() {
-    try {
+    // ฟังก์ชันสำหรับดึงข้อมูลโปรไฟล์ผู้ใช้จาก LIFF
+    async function getUserProfile() {
+      try {
         const profile = await liff.getProfile();
         document.getElementById('userlineId').value = profile.userId;
-    } catch (error) {
+      } catch (error) {
         console.error('Error getting profile data:', error);
+      }
     }
-}
 
-// ฟังก์ชันสำหรับส่งข้อความ Flex Message
-async function sendFlexMessage() {
-    const flexMessage = {
+    // ฟังก์ชันสำหรับส่งข้อความ Flex Message
+    async function sendFlexMessage() {
+      const flexMessage = {
         type: 'flex',
         altText: 'ลงทะเบียนเรียบร้อย',
         contents: {
-            type: 'bubble',
-            styles: {
-                header: {
-                    backgroundColor: '#f0f0f0' // สีพื้นหลังของส่วนหัว
-                },
-                footer: {
-                    backgroundColor: '#f0f0f0' // สีพื้นหลังของส่วนท้าย
-                },
-                body: {
-                    backgroundColor: '#ffffff' // สีพื้นหลังของส่วนกลาง
-                }
-            },
+          type: 'bubble',
+          styles: {
             header: {
-                type: 'box',
-                layout: 'vertical',
-                contents: [
-                    {
-                        type: 'text',
-                        text: 'ข้อมูลลงทะเบียนสำเร็จ',
-                        weight: 'bold',
-                        size: 'lg',
-                        color: '#000000', // สีข้อความของส่วนหัว
-                        align: 'center'
-                    }
-                ]
-            },
-            body: {
-                type: 'box',
-                layout: 'vertical',
-                contents: [
-                    {
-                        type: 'box',
-                        layout: 'vertical',
-                        margin: 'lg',
-                        spacing: 'sm',
-                        contents: [
-                            {
-                                type: 'box',
-                                layout: 'horizontal',
-                                contents: [
-                                    {
-                                        type: 'text',
-                                        text: 'ชื่อ-สกุล',
-                                        size: 'sm',
-                                        color: '#555555',
-                                        flex: 1
-                                    },
-                                    {
-                                        type: 'text',
-                                        text: document.getElementById('nameId').value,
-                                        size: 'sm',
-                                        color: '#111111',
-                                        align: 'end',
-                                        flex: 2
-                                    }
-                                ]
-                            },
-                            {
-                                type: 'box',
-                                layout: 'horizontal',
-                                contents: [
-                                    {
-                                        type: 'text',
-                                        text: 'รหัสพนักงาน',
-                                        size: 'sm',
-                                        color: '#555555',
-                                        flex: 1
-                                    },
-                                    {
-                                        type: 'text',
-                                        text: document.getElementById('numberId').value,
-                                        size: 'sm',
-                                        color: '#111111',
-                                        align: 'end',
-                                        flex: 2
-                                    }
-                                ]
-                            },
-                            {
-                                type: 'box',
-                                layout: 'horizontal',
-                                contents: [
-                                    {
-                                        type: 'text',
-                                        text: 'ตำแหน่ง',
-                                        size: 'sm',
-                                        color: '#555555',
-                                        flex: 1
-                                    },
-                                    {
-                                        type: 'text',
-                                        text: document.getElementById('roleId').value,
-                                        size: 'sm',
-                                        color: '#111111',
-                                        align: 'end',
-                                        flex: 2
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                ]
+              backgroundColor: '#f0f0f0' // สีพื้นหลังของส่วนหัว
             },
             footer: {
+              backgroundColor: '#f0f0f0' // สีพื้นหลังของส่วนท้าย
+            },
+            body: {
+              backgroundColor: '#ffffff' // สีพื้นหลังของส่วนกลาง
+            }
+          },
+          header: {
+            type: 'box',
+            layout: 'vertical',
+            contents: [
+              {
+                type: 'text',
+                text: 'ข้อมูลลงทะเบียนสำเร็จ',
+                weight: 'bold',
+                size: 'lg',
+                color: '#000000', // สีข้อความของส่วนหัว
+                align: 'center'
+              }
+            ]
+          },
+          body: {
+            type: 'box',
+            layout: 'vertical',
+            contents: [
+              {
                 type: 'box',
                 layout: 'vertical',
+                margin: 'lg',
+                spacing: 'sm',
                 contents: [
-                    {
+                  {
+                    type: 'box',
+                    layout: 'horizontal',
+                    contents: [
+                      {
                         type: 'text',
-                        text: 'ยินดีต้อนรับ!',
+                        text: 'ชื่อ-สกุล',
                         size: 'sm',
-                        color: '#aaaaaa',
-                        align: 'center'
-                    }
+                        color: '#555555',
+                        flex: 1
+                      },
+                      {
+                        type: 'text',
+                        text: document.getElementById('nameId').value,
+                        size: 'sm',
+                        color: '#111111',
+                        align: 'end',
+                        flex: 2
+                      }
+                    ]
+                  },
+                  {
+                    type: 'box',
+                    layout: 'horizontal',
+                    contents: [
+                      {
+                        type: 'text',
+                        text: 'รหัสพนักงาน',
+                        size: 'sm',
+                        color: '#555555',
+                        flex: 1
+                      },
+                      {
+                        type: 'text',
+                        text: document.getElementById('numberId').value,
+                        size: 'sm',
+                        color: '#111111',
+                        align: 'end',
+                        flex: 2
+                      }
+                    ]
+                  },
+                  {
+                    type: 'box',
+                    layout: 'horizontal',
+                    contents: [
+                      {
+                        type: 'text',
+                        text: 'ตำแหน่ง',
+                        size: 'sm',
+                        color: '#555555',
+                        flex: 1
+                      },
+                      {
+                        type: 'text',
+                        text: document.getElementById('roleId').value,
+                        size: 'sm',
+                        color: '#111111',
+                        align: 'end',
+                        flex: 2
+                      }
+                    ]
+                  }
                 ]
-            }
+              }
+            ]
+          },
+          footer: {
+            type: 'box',
+            layout: 'vertical',
+            contents: [
+              {
+                type: 'text',
+                text: 'ยินดีต้อนรับ!',
+                size: 'sm',
+                color: '#aaaaaa',
+                align: 'center'
+              }
+            ]
+          }
         }
-    };
+      };
 
-    await liff.sendMessages([flexMessage]);
-}
+      await liff.sendMessages([flexMessage]);
+    }
 
-let url = "https://script.google.com/macros/s/AKfycbzcHv6cB6Nu0gU1-j5JwYjvBIenViYLURqr2KC2DfODrFvb2D8jGNelBp9wGLyo6cMJ/exec";
-let fileInput = document.getElementById("file");
-let imgPreview = document.getElementById("preview");
-let userlineIdInput = document.getElementById("userlineId");
-let nameIdInput = document.getElementById("nameId");
-let roleId = document.getElementById("roleId");
-let numberIdInput = document.getElementById("numberId");
-let submitBtn = document.getElementById("submitBtn");
+    let url = "https://script.google.com/macros/s/AKfycbwxrz9Ot48qZYPxG6zJ04p6pLW40Tk2eu44V4wLEUo7W3bambfv3pbf_wqvIg0BaD4l/exec";
+    let fileInput = document.getElementById("file");
+    let imgPreview = document.getElementById("preview");
+    let userlineIdInput = document.getElementById("userlineId");
+    let nameIdInput = document.getElementById("nameId");
+    let roleId = document.getElementById("roleId");
+    let numberIdInput = document.getElementById("numberId");
+    let submitBtn = document.getElementById("submitBtn");
 
-// ฟังก์ชันสำหรับแปลงไฟล์เป็น base64
-function getBase64(file) {
-    return new Promise((resolve, reject) => {
+    // ฟังก์ชันสำหรับแปลงไฟล์เป็น base64
+    function getBase64(file) {
+      return new Promise((resolve, reject) => {
         let reader = new FileReader();
         reader.onload = () => resolve(reader.result.split(',')[1]);
         reader.onerror = error => reject(error);
         reader.readAsDataURL(file);
-    });
-}
+      });
+    }
 
-// ฟังก์ชันสำหรับแสดงตัวอย่างรูปที่เลือก
-function previewImage() {
-    // ตรวจสอบว่ามีการเลือกไฟล์หรือไม่
-    if (fileInput.files.length > 0) {
+    // ฟังก์ชันสำหรับแสดงตัวอย่างรูปที่เลือก
+    function previewImage() {
+      // ตรวจสอบว่ามีการเลือกไฟล์หรือไม่
+      if (fileInput.files.length > 0) {
         let file = fileInput.files[0];
         let reader = new FileReader();
 
-        reader.onload = function(e) {
-            imgPreview.src = e.target.result;
+        reader.onload = function (e) {
+          imgPreview.src = e.target.result;
         };
 
         reader.readAsDataURL(file);
-    } else {
+      } else {
         imgPreview.src = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png";
+      }
     }
-}
 
-// การตั้งค่าฟังก์ชันเมื่อมีการเปลี่ยนไฟล์
-fileInput.addEventListener('change', () => {
-    previewImage();
-});
+    // การตั้งค่าฟังก์ชันเมื่อมีการเปลี่ยนไฟล์
+    fileInput.addEventListener('change', () => {
+      previewImage();
+    });
 
-// ฟังก์ชันสำหรับตรวจสอบฟอร์มว่ากรอกข้อมูลครบหรือไม่
-function validateForm() {
-    const userlineId = userlineIdInput.value.trim();
-    const nameId = nameIdInput.value.trim();
-    const roleIdValue = roleId.value.trim();
+    // ฟังก์ชันสำหรับตรวจสอบฟอร์มว่ากรอกข้อมูลครบหรือไม่
+    function validateForm() {
+      const userlineId = userlineIdInput.value.trim();
+      const nameId = nameIdInput.value.trim();
+      const roleIdValue = roleId.value.trim();
 
-    // ตรวจสอบว่ามีช่องไหนที่ยังไม่ได้กรอกหรือไม่
-    if (userlineId === '' || nameId === '' || roleIdValue === '') {
+      // ตรวจสอบว่ามีช่องไหนที่ยังไม่ได้กรอกหรือไม่
+      if (userlineId === '' || nameId === '' || roleIdValue === '') {
         return false;
+      }
+
+      return true;
     }
 
-    return true;
-}
+    // ตั้งค่าเหตุการณ์สำหรับปุ่มส่งข้อมูลเมื่อคลิก
+    submitBtn.addEventListener('click', async (event) => {
+      event.preventDefault(); // ป้องกันการส่งฟอร์มตามปกติ
 
-// ตั้งค่าเหตุการณ์สำหรับปุ่มส่งข้อมูลเมื่อคลิก
-submitBtn.addEventListener('click', async (event) => {
-    event.preventDefault(); // ป้องกันการส่งฟอร์มตามปกติ
-
-    // ตรวจสอบฟอร์มว่ากรอกข้อมูลครบหรือไม่ก่อนทำการส่งข้อมูล
-    if (!validateForm()) {
+      // ตรวจสอบฟอร์มว่ากรอกข้อมูลครบหรือไม่ก่อนทำการส่งข้อมูล
+      if (!validateForm()) {
         // แสดงข้อความแจ้งเตือนหากการตรวจสอบไม่ผ่าน
         Swal.fire({
-            icon: 'error',
-            title: 'ข้อผิดพลาดในการตรวจสอบ',
-            text: 'กรุณากรอกข้อมูลให้ครบถ้วน',
+          icon: 'error',
+          title: 'ข้อผิดพลาดในการตรวจสอบ',
+          text: 'กรุณากรอกข้อมูลให้ครบถ้วน',
         });
         return;
-    }
+      }
 
-    // แสดงกล่องยืนยันการส่งข้อมูล
-    const isConfirmed = await showConfirmationDialog();
+      // แสดงกล่องยืนยันการส่งข้อมูล
+      const isConfirmed = await showConfirmationDialog();
 
-    if (isConfirmed) {
+      if (isConfirmed) {
         // ผู้ใช้ยืนยันการส่งข้อมูล ดำเนินการต่อไป
 
         // ปิดการใช้งานปุ่มส่งข้อมูล
         submitBtn.disabled = true;
 
         try {
-            let obj;
+          let obj;
 
-            // ตรวจสอบว่ามีการเลือกไฟล์หรือไม่
-            if (fileInput.files.length > 0) {
-                let file = fileInput.files[0];
-                let base64 = await getBase64(file);
-                imgPreview.src = `data:${file.type};base64,${base64}`;
+          // ตรวจสอบว่ามีการเลือกไฟล์หรือไม่
+          if (fileInput.files.length > 0) {
+            let file = fileInput.files[0];
+            let base64 = await getBase64(file);
+            imgPreview.src = `data:${file.type};base64,${base64}`;
 
-                obj = {
-                    base64: base64,
-                    type: file.type,
-                    name: file.name,
-                    userlineId: userlineIdInput.value,
-                    nameId: nameIdInput.value,
-                    roleId: roleId.value,
-                    numberId: numberIdInput.value
-                };
-            } else {
-                // ดึงรูปภาพเริ่มต้นและแปลงเป็น base64
-                let response = await fetch("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png");
-                let blob = await response.blob();
-                let base64 = await getBase64(blob);
-                
-                obj = {
-                    base64: base64,
-                    type: "image/png", // สมมติว่าเป็นรูป PNG
-                    name: "Avatar.png", // ชื่อของรูปเริ่มต้น
-                    userlineId: userlineIdInput.value,
-                    nameId: nameIdInput.value,
-                    roleId: roleId.value,
-                    numberId: numberIdInput.value
-                };
+            obj = {
+              base64: base64,
+              type: file.type,
+              name: file.name,
+              userlineId: userlineIdInput.value,
+              nameId: nameIdInput.value,
+              roleId: roleId.value,
+              numberId: numberIdInput.value
+            };
+          } else {
+            // ดึงรูปภาพเริ่มต้นและแปลงเป็น base64
+            let response = await fetch("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png");
+            let blob = await response.blob();
+            let base64 = await getBase64(blob);
+
+            obj = {
+              base64: base64,
+              type: "image/png", // สมมติว่าเป็นรูป PNG
+              name: "Avatar.png", // ชื่อของรูปเริ่มต้น
+              userlineId: userlineIdInput.value,
+              nameId: nameIdInput.value,
+              roleId: roleId.value,
+              numberId: numberIdInput.value
+            };
+          }
+
+          Swal.fire({
+            title: 'กำลังบันทึก, รอสักครู่...',
+            allowOutsideClick: false,
+            showConfirmButton: false,
+            html: '<div class="swal2-loading"></div>',
+            onBeforeOpen: () => {
+              Swal.showLoading();
             }
+          });
 
-            Swal.fire({
-                title: 'กำลังบันทึก, รอสักครู่...',
-                allowOutsideClick: false,
-                showConfirmButton: false,
-                html: '<div class="swal2-loading"></div>',
-                onBeforeOpen: () => {
-                    Swal.showLoading();
-                }
-            });
+          let response = await fetch(url, {
+            method: "POST",
+            body: JSON.stringify(obj)
+          });
 
-            let response = await fetch(url, {
-                method: "POST",
-                body: JSON.stringify(obj)
-            });
+          let data = await response.text();
 
-            let data = await response.text();
-
-            Swal.fire({
-                title: 'สำเร็จ!',
-                text: 'บันทึกข้อมูลของคุณเรียบร้อย!',
-                icon: 'success',
-                confirmButtonText: 'ปิด',
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // ปิดหน้าต่าง LIFF
-                    liff.closeWindow();
-                }
-            });
-            sendFlexMessage();
-            console.log(data);
+          Swal.fire({
+            title: 'สำเร็จ!',
+            text: 'บันทึกข้อมูลของคุณเรียบร้อย!',
+            icon: 'success',
+            confirmButtonText: 'ปิด',
+          }).then((result) => {
+            if (result.isConfirmed) {
+              // ปิดหน้าต่าง LIFF
+              liff.closeWindow();
+            }
+          });
+          sendFlexMessage();
+          console.log(data);
         } catch (error) {
-            Swal.fire({
-                icon: 'error',
-                title: 'เกิดข้อผิดพลาด',
-                text: 'เกิดข้อผิดพลาดขณะส่งข้อมูล',
-            });
+          Swal.fire({
+            icon: 'error',
+            title: 'เกิดข้อผิดพลาด',
+            text: 'เกิดข้อผิดพลาดขณะส่งข้อมูล',
+          });
 
-            console.error(error);
+          console.error(error);
         } finally {
-            // เปิดใช้งานปุ่มส่งข้อมูลหลังจากการบันทึกสำเร็จหรือเกิดข้อผิดพลาด
-            submitBtn.disabled = false;
+          // เปิดใช้งานปุ่มส่งข้อมูลหลังจากการบันทึกสำเร็จหรือเกิดข้อผิดพลาด
+          submitBtn.disabled = false;
         }
-    } else {
+      } else {
         // ผู้ใช้ยกเลิกการส่งข้อมูล
         Swal.fire('ยกเลิกการส่งข้อมูล', 'ข้อมูลของคุณยังไม่ได้ถูกส่ง', 'info');
-    }
-});
+      }
+    });
 
-// ฟังก์ชันสำหรับแสดงกล่องยืนยันการส่งข้อมูล
-async function showConfirmationDialog() {
-    const confirmation = await Swal.fire({
+    // ฟังก์ชันสำหรับแสดงกล่องยืนยันการส่งข้อมูล
+    async function showConfirmationDialog() {
+      const confirmation = await Swal.fire({
         title: 'ยืนยันการส่งข้อมูล',
         text: 'แน่ใจ ว่าคุณกำลังส่งข้อมูล?',
         icon: 'question',
         showCancelButton: true,
         confirmButtonText: 'ใช่, ส่งข้อมูล!',
         cancelButtonText: 'ไม่, ยกเลิก'
-    });
+      });
 
-    return confirmation.isConfirmed;
-}
-</script>
+      return confirmation.isConfirmed;
+    }
+  </script>
 </body>
+
 </html>
