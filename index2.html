@@ -56,10 +56,8 @@
                 <div class="flex flex-col space-y-2 my-4">
                     <input type="radio" id="radio-three" name="switch-jop" value="เข้างาน" class="peer/in hidden" />
                     <label for="radio-three" class="text-center p-2 rounded-md border border-green-500 text-teal-500 font-bold cursor-pointer transition-colors duration-100 ease-in-out hover:bg-gray-100 peer-checked/in:bg-[#1F3D77] peer-checked/in:text-white peer-checked/in:border-blue-200">เข้างาน</label>
-                    
                     <input type="radio" id="radio-four" name="switch-jop" value="ระหว่างวัน" class="peer/mid hidden" />
                     <label for="radio-four" class="text-center p-2 rounded-md border border-green-500 text-teal-500 font-bold cursor-pointer transition-colors duration-100 ease-in-out hover:bg-gray-100 peer-checked/mid:bg-[#1F3D77] peer-checked/mid:text-white peer-checked/mid:border-blue-200">ระหว่างวัน</label>
-                    
                     <input type="radio" id="radio-five" name="switch-jop" value="ออกงาน" class="peer/out hidden" />
                     <label for="radio-five" class="text-center p-2 rounded-md border border-green-500 text-teal-500 font-bold cursor-pointer transition-colors duration-100 ease-in-out hover:bg-gray-100 peer-checked/out:bg-[#1F3D77] peer-checked/out:text-white peer-checked/out:border-blue-200">ออกงาน</label>
                 </div>
@@ -168,6 +166,14 @@
             const year = today.getFullYear();
             const month = String(today.getMonth() + 1).padStart(2, '0');
             const day = String(today.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
+        function getFormattedDateForDisplay() {
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const day = String(today.getDate()).padStart(2, '0');
             return `${day}-${month}-${year}`;
         }
 
@@ -187,21 +193,14 @@
             }
 
             Swal.fire({
-                title: 'ยืนยันการส่งข้อมูล',
-                text: 'คุณแน่ใจหรือไม่ที่ต้องการส่งข้อมูล?',
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonText: 'ยืนยัน',
-                cancelButtonText: 'ยกเลิก',
+                title: 'ยืนยันการส่งข้อมูล', text: 'คุณแน่ใจหรือไม่ที่ต้องการส่งข้อมูล?', icon: 'question',
+                showCancelButton: true, confirmButtonText: 'ยืนยัน', cancelButtonText: 'ยกเลิก',
             }).then((result) => {
                 if (result.isConfirmed) {
                     document.getElementById('submitButton').disabled = true;
                     Swal.fire({
-                        title: 'กำลังบันทึกข้อมูล',
-                        text: 'กรุณารอสักครู่...',
-                        showConfirmButton: false,
-                        allowOutsideClick: false,
-                        willOpen: () => { Swal.showLoading(); }
+                        title: 'กำลังบันทึกข้อมูล', text: 'กรุณารอสักครู่...', showConfirmButton: false,
+                        allowOutsideClick: false, willOpen: () => { Swal.showLoading(); }
                     });
 
                     const submissionTime = getCurrentTimeInBangkok();
@@ -209,38 +208,27 @@
 
                     let spt = preview.src.split("base64,")[1];
                     let obj = {
-                        base64: spt,
-                        name: columnBData.value,
-                        role: roleInput.value,
-                        job: jobInput.value,
-                        note: noteInput.value,
-                        today: todayInput.value,
-                        time: submissionTime,
-                        lat: latitudeInput.value,
-                        long: longitudeInput.value,
-                        address: fullAddressInput.value,
-                        user: userId.value
+                        base64: spt, name: columnBData.value, role: roleInput.value,
+                        job: jobInput.value, note: noteInput.value, today: todayInput.value,
+                        time: submissionTime, lat: latitudeInput.value, long: longitudeInput.value,
+                        address: fullAddressInput.value, user: userId.value
                     };
 
-                    fetch(url, {
-                        method: "POST",
-                        body: JSON.stringify(obj),
-                    })
-                    .then(response => response.text())
-                    .then(data => {
-                        Swal.close();
-                        Swal.fire('สำเร็จ!', 'บันทึกข้อมูลของคุณเรียบร้อย!', 'success').then(() => {
-                            sendFlexMessage();
-                            console.log(data);
+                    fetch(url, { method: "POST", body: JSON.stringify(obj) })
+                        .then(response => response.text())
+                        .then(data => {
+                            Swal.close();
+                            Swal.fire('สำเร็จ!', 'บันทึกข้อมูลของคุณเรียบร้อย!', 'success').then(() => {
+                                sendFlexMessage(); console.log(data);
+                            });
+                        })
+                        .catch(error => {
+                            Swal.close();
+                            Swal.fire('Error!', 'Form submission failed. Please try again.', 'error').then(() => {
+                                document.getElementById('submitButton').disabled = false;
+                            });
+                            console.error(error);
                         });
-                    })
-                    .catch(error => {
-                        Swal.close();
-                        Swal.fire('Error!', 'Form submission failed. Please try again.', 'error').then(() => {
-                            document.getElementById('submitButton').disabled = false;
-                        });
-                        console.error(error);
-                    });
                 }
             });
         }
@@ -252,7 +240,7 @@
                 const employeeId = roleInput.value || '(ไม่มีข้อมูล)';
                 const jobStatus = jobInput.value || 'บันทึกเวลา';
                 const recordedTime = currentTime.value || '(ไม่พบบันทึกเวลา)';
-                const recordedDate = todayInput.value || '(ไม่พบบันทึกวันที่)';
+                const recordedDate = getFormattedDateForDisplay() || '(ไม่พบบันทึกวันที่)';
                 const location = fullAddressInput.value || 'ข้อมูลไม่พร้อมแสดง บันทึกพิกัดของคุณเรียบร้อย';
 
                 let jobColor = '#000000FF';
@@ -305,26 +293,13 @@
                     document.getElementById("fullAddress").innerText = "Error fetching address.";
                 });
 
-            document.getElementById("mapIframe").src = `http://googleusercontent.com/maps/google.com/2{latitude},${longitude}&output=embed`;
+            document.getElementById("mapIframe").src = `https://maps.google.com/maps?q=${latitude},${longitude}&z=15&output=embed`;
         }
         
         // --- Step Navigation ---
         let currentStep = 1;
-        function nextStep() {
-            if (currentStep < 3) {
-                document.getElementById(`step${currentStep}`).style.display = 'none';
-                currentStep++;
-                document.getElementById(`step${currentStep}`).style.display = 'block';
-            }
-        }
-
-        function prevStep() {
-            if (currentStep > 1) {
-                document.getElementById(`step${currentStep}`).style.display = 'none';
-                currentStep--;
-                document.getElementById(`step${currentStep}`).style.display = 'block';
-            }
-        }
+        function nextStep() { if (currentStep < 3) { document.getElementById(`step${currentStep}`).style.display = 'none'; currentStep++; document.getElementById(`step${currentStep}`).style.display = 'block'; } }
+        function prevStep() { if (currentStep > 1) { document.getElementById(`step${currentStep}`).style.display = 'none'; currentStep--; document.getElementById(`step${currentStep}`).style.display = 'block'; } }
 
         function checkPictureAndNextStep() {
             const capturedImage = document.getElementById('preview').src;
@@ -348,11 +323,7 @@
                 table.innerHTML = '';
                 data.values.forEach(row => {
                     const tr = document.createElement('tr');
-                    row.forEach(cell => {
-                        const td = document.createElement('td');
-                        td.textContent = cell;
-                        tr.appendChild(td);
-                    });
+                    row.forEach(cell => { const td = document.createElement('td'); td.textContent = cell; tr.appendChild(td); });
                     table.appendChild(tr);
                 });
             } catch (error) {
@@ -364,7 +335,6 @@
             const filter = document.getElementById('userId').value.toUpperCase();
             const table = document.getElementById('data-table');
             const rows = table.getElementsByTagName('tr');
-
             for (let i = 0; i < rows.length; i++) {
                 const cells = rows[i].getElementsByTagName('td');
                 if (cells.length > 0 && (cells[0].textContent || cells[0].innerText).toUpperCase().indexOf(filter) > -1) {
@@ -380,12 +350,10 @@
         document.addEventListener("DOMContentLoaded", function () {
             todayInput.value = getFormattedDate();
             initializeLiff();
-            fetchData();
 
             const video = document.getElementById("camera-preview");
             const startCameraBtn = document.getElementById("start-camera-btn");
             const captureBtn = document.getElementById("capture-btn");
-            const previewImage = document.getElementById("preview");
             let stream;
 
             startCameraBtn.addEventListener("click", () => {
@@ -404,14 +372,12 @@
                 canvas.width = video.videoWidth;
                 canvas.height = video.videoHeight;
                 canvas.getContext("2d").drawImage(video, 0, 0, canvas.width, canvas.height);
-                previewImage.src = canvas.toDataURL("image/png");
+                preview.src = canvas.toDataURL("image/png");
                 video.style.display = "none";
             });
 
             document.querySelectorAll('input[name="switch-jop"]').forEach(radio => {
-                radio.addEventListener('change', function() {
-                    jobInput.value = this.value;
-                });
+                radio.addEventListener('change', function() { jobInput.value = this.value; });
             });
 
             setInterval(() => {
