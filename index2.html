@@ -252,74 +252,115 @@
         }
         
         // --- LIFF & Flex Message Logic ---
-        async function sendFlexMessage() {
-            let jobColor = '#000000FF'; // Default color
-            if (jobInput.value === 'เข้างาน') jobColor = '#0D9608FF'; // Green
-            else if (jobInput.value === 'ออกงาน') jobColor = '#EF2F14FF'; // Red
+async function sendFlexMessage() {
+    try {
+        // --- 1. ตรวจสอบและเตรียมข้อมูลก่อนสร้าง Flex Message ---
+        const displayName = columnBData.value || '(ไม่มีข้อมูล)';
+        const employeeId = roleInput.value || '(ไม่มีข้อมูล)';
+        const jobStatus = jobInput.value || 'บันทึกเวลา';
+        const recordedTime = currentTime.value || '(ไม่พบบันทึกเวลา)';
+        const recordedDate = todayInput.value || '(ไม่พบบันทึกวันที่)';
+        const location = fullAddressInput.value || 'ข้อมูลไม่พร้อมแสดง บันทึกพิกัดของคุณเรียบร้อย';
 
-            const flexMessage = {
-                type: 'flex',
-                altText: 'บันทึกเวลา',
-                contents: {
-                    type: 'bubble',
-                    direction: 'ltr',
-                    body: {
-                        type: 'box',
-                        layout: 'vertical',
-                        spacing: 'md',
-                        contents: [
-                            {
-                                type: 'box',
-                                layout: 'horizontal',
-                                contents: [
-                                    { type: 'text', text: 'บันทึกเวลา', weight: 'bold', size: 'md', align: 'start', margin: 'sm' },
-                                    { type: 'text', text: ` ${jobInput.value}`, weight: 'bold', size: 'md', color: jobColor, align: 'end' }
-                                ]
-                            },
-                            { type: 'separator' },
-                            {
-                                type: 'box', layout: 'vertical', spacing: 'sm',
-                                contents: [
-                                    { type: 'box', layout: 'baseline', contents: [
-                                        { type: 'text', text: 'ชื่อพนักงาน', weight: 'bold', size: 'sm', margin: 'sm' },
-                                        { type: 'text', text: `${columnBData.value}`, size: 'sm', color: '#000000FF', align: 'end' }
-                                    ]},
-                                    { type: 'box', layout: 'baseline', contents: [
-                                        { type: 'text', text: 'รหัสพนักงาน', weight: 'bold', size: 'sm', flex: 0, margin: 'sm' },
-                                        { type: 'text', text: `${roleInput.value}`, size: 'sm', color: '#000000FF', align: 'end' }
-                                    ]}
-                                ]
-                            },
-                            { type: 'separator' },
-                            {
-                                type: 'box', layout: 'vertical',
-                                contents: [
-                                    { type: 'box', layout: 'baseline', contents: [
-                                        { type: 'text', text: 'วันที่', weight: 'bold' },
-                                        { type: 'text', text: `${todayInput.value}`, weight: 'bold', align: 'end' }
-                                    ]},
-                                    { type: 'box', layout: 'baseline', contents: [
-                                        { type: 'text', text: 'เวลา', weight: 'bold' },
-                                        { type: 'text', text: `${currentTime.value}`, weight: 'bold', size: 'xl', color: '#EF2F14FF', align: 'end' }
-                                    ]}
-                                ]
-                            },
-                            { type: 'separator' },
-                            {
-                                type: 'box', layout: 'vertical', spacing: 'xs', margin: 'sm',
-                                contents: [
-                                    { type: 'text', text: 'สถานที่', weight: 'bold', size: 'sm', margin: 'md' },
-                                    { type: 'text', text: fullAddressInput.value ? `${fullAddressInput.value}` : 'ข้อมูลไม่พร้อมแสดง บันทึกพิกัดของคุณเรียบร้อย', wrap: true }
-                                ]
-                            }
-                        ]
-                    }
-                }
-            };
-            
-            await liff.sendMessages([flexMessage]);
-            liff.closeWindow();
+        let jobColor = '#000000FF'; // Default color
+        if (jobStatus === 'เข้างาน') jobColor = '#0D9608FF'; // Green
+        else if (jobStatus === 'ออกงาน') jobColor = '#EF2F14FF'; // Red
+
+        // ตรวจสอบว่า liff พร้อมใช้งานและ login แล้ว
+        if (!liff.isLoggedIn()) {
+            console.error("LIFF is not logged in. Cannot send message.");
+            Swal.fire('เกิดข้อผิดพลาด', 'LIFF ไม่ได้ล็อกอินอยู่ กรุณาเปิดฟอร์มใหม่อีกครั้ง', 'error');
+            return;
         }
+
+        // --- 2. สร้าง Object ของ Flex Message ---()
+        const flexMessage = {
+            type: 'flex',
+            altText: 'บันทึกเวลา',
+            contents: {
+                type: 'bubble',
+                direction: 'ltr',
+                body: {
+                    type: 'box',
+                    layout: 'vertical',
+                    spacing: 'md',
+                    contents: [
+                        {
+                            type: 'box',
+                            layout: 'horizontal',
+                            contents: [
+                                { type: 'text', text: 'บันทึกเวลา', weight: 'bold', size: 'md', align: 'start', margin: 'sm' },
+                                { type: 'text', text: ` ${jobStatus}`, weight: 'bold', size: 'md', color: jobColor, align: 'end' }
+                            ]
+                        },
+                        { type: 'separator' },
+                        {
+                            type: 'box',
+                            layout: 'vertical',
+                            spacing: 'sm',
+                            contents: [
+                                {
+                                    type: 'box', layout: 'baseline', contents: [
+                                        { type: 'text', text: 'ชื่อพนักงาน', weight: 'bold', size: 'sm', margin: 'sm' },
+                                        { type: 'text', text: displayName, size: 'sm', color: '#000000FF', align: 'end', wrap: true }
+                                    ]
+                                },
+                                {
+                                    type: 'box', layout: 'baseline', contents: [
+                                        { type: 'text', text: 'รหัสพนักงาน', weight: 'bold', size: 'sm', flex: 0, margin: 'sm' },
+                                        { type: 'text', text: employeeId, size: 'sm', color: '#000000FF', align: 'end', wrap: true }
+                                    ]
+                                }
+                            ]
+                        },
+                        { type: 'separator' },
+                        {
+                            type: 'box',
+                            layout: 'vertical',
+                            contents: [
+                                {
+                                    type: 'box', layout: 'baseline', contents: [
+                                        { type: 'text', text: 'วันที่', weight: 'bold' },
+                                        { type: 'text', text: recordedDate, weight: 'bold', align: 'end' }
+                                    ]
+                                },
+                                {
+                                    type: 'box', layout: 'baseline', contents: [
+                                        { type: 'text', text: 'เวลา', weight: 'bold' },
+                                        { type: 'text', text: recordedTime, weight: 'bold', size: 'xl', color: '#EF2F14FF', align: 'end' }
+                                    ]
+                                }
+                            ]
+                        },
+                        { type: 'separator' },
+                        {
+                            type: 'box',
+                            layout: 'vertical',
+                            spacing: 'xs',
+                            margin: 'sm',
+                            contents: [
+                                { type: 'text', text: 'สถานที่', weight: 'bold', size: 'sm', margin: 'md' },
+                                { type: 'text', text: location, wrap: true }
+                            ]
+                        }
+                    ]
+                }
+            }
+        };
+        
+        // --- 3. ส่งข้อความและปิดหน้าต่าง LIFF ---
+        console.log("Attempting to send Flex Message with data:", flexMessage);
+        await liff.sendMessages([flexMessage]);
+        console.log("Flex Message sent successfully.");
+        liff.closeWindow();
+
+    } catch (error) {
+        // --- 4. จัดการข้อผิดพลาด ---
+        console.error("Failed to send Flex Message:", error);
+        Swal.fire('ส่งข้อความไม่สำเร็จ', `เกิดข้อผิดพลาด: ${error.message}`, 'error');
+        // ไม่ปิดหน้าต่าง LIFF หากส่งไม่สำเร็จ เพื่อให้ผู้ใช้เห็นข้อความแจ้งเตือน
+    }
+}
 
         // --- Event Listeners and Initializers ---
         document.addEventListener("DOMContentLoaded", function () {
