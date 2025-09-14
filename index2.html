@@ -173,14 +173,17 @@
             return `${hours}:${minutes}`;
         }
 
-        // Function to get today's date in YYYY-MM-DD format
+
+        // Function to get today's date in DD-MM-YYYY format
         function getFormattedDate() {
             const today = new Date();
             const year = today.getFullYear();
             const month = String(today.getMonth() + 1).padStart(2, '0');
             const day = String(today.getDate()).padStart(2, '0');
-            return `${year}-${month}-${day}`;
+            // 👇 สลับตำแหน่งของ day, month, year และเปลี่ยนตัวคั่นเป็น -
+            return `${day}-${month}-${year}`; 
         }
+
 
         // --- Form Submission Logic ---
         function submitForm() {
