@@ -475,7 +475,16 @@
                     };
 
                     fetch(url, { method: "POST", body: JSON.stringify(obj) })
-                        .then(response => response.text())
+                        .then(async response => {
+                            const text = (await response.text()).trim();
+                            if (!response.ok) {
+                                throw new Error(text || `HTTP ${response.status}`);
+                            }
+                            if (text !== 'Success') {
+                                throw new Error(text || 'Server returned an unexpected response.');
+                            }
+                            return text;
+                        })
                         .then(data => {
                             Swal.close();
                             Swal.fire('สำเร็จ!', 'บันทึกข้อมูลของคุณเรียบร้อย!', 'success').then(() => {
@@ -484,7 +493,7 @@
                         })
                         .catch(error => {
                             Swal.close();
-                            Swal.fire('Error!', 'Form submission failed. Please try again.', 'error').then(() => {
+                            Swal.fire('Error!', error.message || 'Form submission failed. Please try again.', 'error').then(() => {
                                 document.getElementById('submitButton').disabled = false;
                             });
                             console.error(error);
